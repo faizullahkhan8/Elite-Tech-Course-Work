@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <header>
+            <h1>Shipping Information</h1>
+        </header>
+        <form action="confirm.html">
+            <fieldset>
+                <legend>Address Details</legend>
+                <label>Full Name:</label>
+                <input type="text" name="fullName" id="fullName" /><br />
+                <label>Phone Number:</label>
+                <input type="text" name="phoneNumber" id="phoneNumber" /><br />
+                <label>Adress:</label>
+                <input type="text" name="address" id="address" /><br />
+                <label>City:</label>
+                <input type="text" name="city" id="city" /><br />
+                <label>Zip Code:</label>
+                <input type="number" name="zipCode" id="zipCode" /><br />
+            </fieldset>
+            <fieldset>
+                <legend>Delivery Type</legend>
+                <input type="radio" name="deliverType" />Standard <br />
+                <input type="radio" name="deliverType" />Express
+            </fieldset>
+            <input type="checkbox" /> Billing address same as shipping <br />
+            <input type="submit" value="Next: Comfirm Order" />
+        </form>
+    </body>
+</html>
