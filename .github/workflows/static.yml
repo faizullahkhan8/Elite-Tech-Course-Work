@@ -37,7 +37,7 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           # Upload entire repository
-          path: '3 - Saturday'
+          path: '4 - Sunday'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
