@@ -110,12 +110,194 @@ body {
     width: 100%;
 }
 
+.body-img-desc {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.body-img-desc > .item {
+    display: flex;
+    align-items: center;
+
+    gap: 2rem;
+}
+
+.body-img-desc > .item > .item-left {
+    width: 100%;
+}
+
+.body-img-desc > .item > .item-left > img {
+    width: 100%;
+}
+
+.endless-uses {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    gap: 8px;
+    flex-direction: column;
+}
+
+.endless-uses > .endless-upper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.endless-lower {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.endless-lower > .lower-left {
+    width: 30%;
+
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+}
+
+.endless-lower > .lower-left > ul {
+    list-style-type: none;
+}
+
+.endless-lower > .lower-left > .used-by > div {
+    display: flex;
+    gap: 1rem;
+
+    margin-top: 4px;
+}
+
+.endless-lower > .lower-right {
+    flex: 1;
+}
+.endless-lower > .lower-right > img {
+    width: 100%;
+}
+
+.circle {
+    width: 1rem;
+    height: 1rem;
+    border-radius: 50%;
+    background-color: red;
+}
+
+.templates {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    flex-direction: column;
+    width: 100%;
+}
+
+.templates-upper {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.templates-lower {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.templates-lower > div > img {
+    width: 100%;
+}
+
+.innovative-teams {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    flex-direction: column;
+    width: 100%;
+}
+
+.innovative-teams-upper {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.innovative-teams-lower {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 2rem;
+}
+
+.innovative-teams-lower > div {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.innovative-teams-people {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.try-notion-today {
+    width: 100%;
+    height: 40rem;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.try-notion-today > div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 8px;
+}
+.try-notion-today > div > button {
+    background-color: red;
+    color: white;
+}
+
+.try-notion-today > .try-notion-today-img {
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+}
+.try-notion-today > .try-notion-today-img > img {
+    width: 100%;
+    height: 15rem;
+}
+
+footer {
+    width: 100%;
+    display: flex;
+    gap: 1rem;
+}
+
+footer > div > ul {
+    list-style-type: none;
+}
+
 /* MEDIA QUERIES */
 
 @media (max-width: 575.98px) {
     /* Styles for extra small screens */
     .container {
-        width: 90%;
+        width: 95%;
     }
     .logo-links > .links {
         display: none;
@@ -137,6 +319,21 @@ body {
     .left > h1 {
         font-size: 38px;
     }
+
+    .body-img-desc > .item {
+        flex-direction: column-reverse;
+    }
+
+    .templates-lower {
+        flex-wrap: wrap;
+    }
+
+    .innovative-teams-lower {
+        flex-wrap: wrap;
+    }
+    footer {
+        flex-wrap: wrap;
+    }
 }
 
 /* Medium devices (tablets, 576px to 767px) */
@@ -157,6 +354,21 @@ body {
 
     .left {
         width: 100%;
+    }
+
+    .body-img-desc > .item {
+        flex-direction: column-reverse;
+    }
+
+    .templates-lower {
+        flex-wrap: wrap;
+    }
+
+    .innovative-teams-lower {
+        flex-wrap: wrap;
+    }
+    footer {
+        flex-wrap: wrap;
     }
 }
 
