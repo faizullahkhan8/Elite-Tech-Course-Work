@@ -248,19 +248,114 @@
 
 // [13]: did'nt understand
 // [14]: check triangle angles for validation
-let a = 5;
-let b = 7;
-let c = 10;
+// let a = prompt("Enter first angle for triangle");
+// let b = prompt("Enter Second angle for triangle");
+// let c = prompt("Enter Third angle for triangle");
 
-if (a + b > c && a + c > b && b + c > a) {
-    console.log("Triangle is valid");
+// if (a + b > c && a + c > b && b + c > a) {
+//     console.log("Triangle is valid");
+// } else {
+//     console.log("Triagle is invalid");
+// }
+
+// [15]: Check the triangle for Equilateral(all sides are equal),Isosceles(any two side are equal) and scalene(all sides are different).
+
+// let a = prompt("Enter first angle for triangle");
+// let b = prompt("Enter Second angle for triangle");
+// let c = prompt("Enter Third angle for triangle");
+
+// if (a + b > c && a + c > b && b + c > a) {
+//     if (a == b && b == c) {
+//         console.log("Triangle is Equilateral");
+//     } else if (a == b || b == c || c == a) {
+//         console.log("Triangle is Isosceles");
+//     } else {
+//         console.log("Triangle is Scalene");
+//     }
+// } else {
+//     console.log("triangle is invalid");
+// }
+
+// [16]: did'nt understand;
+// [17]:profit and lose calculator
+// let investement = prompt("Enter you investement");
+// let totalRevenue = prompt("Enter you Total Revenue");
+
+// if (totalRevenue > investement) {
+//     let profit = totalRevenue - investement;
+//     console.log("Profit in percentage: " + (profit / investement) * 100 + "%");
+//     console.log("Profit in Amount: " + profit);
+// } else if (investement > totalRevenue) {
+//     let loss = investement - totalRevenue;
+//     console.log("Loss in percentage: " + (loss / investement) * 100 + "%");
+//     console.log("Loss in Amount: " + loss);
+// } else {
+//     console.log("No loss No profit");
+// }
+
+// [18]: GPA calculator
+// let subjects = [];
+// let totalMarks = 0;
+// for (let i = 0; i < 5; i++) {
+//     subjects.push(prompt(`Enter Your marks of Subject: ${i + 1} `));
+
+//     totalMarks += Number.parseInt(subjects[i]);
+// }
+
+// let obtainedMarks = prompt("Enter your obtained marks");
+
+// let percentage = (totalMarks / obtainedMarks) * 100;
+
+// if (percentage >= 90) {
+//     console.log("Grade A");
+// } else if (percentage >= 70 && percentage < 90) {
+//     console.log("Grade B");
+// } else if (percentage >= 60 && percentage < 70) {
+//     console.log("Grade C");
+// } else if (percentage >= 50 && percentage < 60) {
+//     console.log("Grade D");
+// } else if (percentage >= 40 && percentage < 50) {
+//     console.log("Grade E");
+// } else {
+//     console.log("Grade F");
+// }
+
+// [19]: gross salery
+let basicSalary = 18000;
+
+let hra, da;
+
+if (basicSalary <= 10000) {
+    hra = 0.2 * basicSalary;
+    da = 0.8 * basicSalary;
+} else if (basicSalary <= 20000) {
+    hra = 0.25 * basicSalary;
+    da = 0.9 * basicSalary;
 } else {
-    console.log("Triagle is invalid");
+    hra = 0.3 * basicSalary;
+    da = 0.95 * basicSalary;
 }
-// [15]:
-// [16]:
-// [17]:
-// [18]:
-// [19]:
-// [20]:
-// [21]:
+
+let grossSalary = basicSalary + hra + da;
+
+console.log("Basic Salary: Rs." + basicSalary);
+console.log("HRA: Rs." + hra);
+console.log("DA: Rs." + da);
+console.log("Gross Salary: Rs." + grossSalary);
+
+// [20]:Electricity bill calculator
+let units = prompt("Enter Your total cunsumed units");
+let bill = 0;
+
+if (units <= 50) {
+    bill = units * 0.5;
+} else if (units <= 150) {
+    bill = 50 * 0.5 + (units - 50) * 0.75;
+} else if (units <= 250) {
+    bill = 50 * 0.5 + 100 * 0.75 + (units - 150) * 1.2;
+} else {
+    bill = 50 * 0.5 + 100 * 0.75 + 100 * 1.2 + (units - 250) * 1.5;
+}
+
+console.log("Electricity Units Consumed: " + units);
+console.log("Total Electricity Bill: Rs." + bill.toFixed(2));
