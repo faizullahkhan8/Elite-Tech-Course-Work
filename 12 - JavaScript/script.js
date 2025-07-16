@@ -242,9 +242,78 @@ function isPalindrome(num) {
     }
 }
 // [18] : SUM OF DIGITS OF A GIVEN NUMBER
+function SumOfGivenNumber(num) {
+    let totalSum = 0;
+
+    while (num > 0) {
+        console.log(num);
+        let digit = num % 10;
+        totalSum += digit;
+        num = Math.floor(num / 10);
+    }
+
+    console.log(totalSum);
+}
+
 // [19] : GENERATE NTH FIBONACCI TERM
+function printFibonacciSequence(limit) {
+    let sequence = [0, 1];
+    for (let i = 2; i < limit; i++) {
+        sequence[i] = sequence[i - 1] + sequence[i - 2];
+    }
+
+    console.log(sequence);
+}
+
 // [20] : FIND GCD(HCF) OF TWO NUMBERS
+function printGDCOfTwoNumbers(num_1, num_2) {
+    while (num_2 !== 0) {
+        let temp = num_2;
+        num_2 = num_1 % num_2;
+        num_1 = temp;
+    }
+
+    console.log("GDC is:", num_1);
+}
+
 // [21] : FIND LCM OF TWO NUMBERS
+function printLCMOfTwoNumbers(num_1, num_2) {
+    let temp_num_1 = num_1;
+    let temp_num_2 = num_2;
+    while (temp_num_2 !== 0) {
+        let temp = temp_num_2;
+        temp_num_2 = temp_num_1 % temp_num_2;
+        temp_num_1 = temp;
+    }
+
+    console.log((num_1 * num_2) / temp_num_1);
+}
+
 // [22] : DISPLAY ALL ARRAY ELEMENTS
+function displayAllElementsOfArray(array = []) {
+    for (let index = 0; index < array.length; index++) {
+        console.log(array[index]);
+    }
+}
+
 // [23] : DISPLAY SUM OF ALL ARRAY ELEMENTS
+function displayAllElementsOfArray(array = []) {
+    let total = 0;
+    for (let index = 0; index < array.length; index++) {
+        total = total + array[i];
+    }
+
+    console.log(total);
+}
 // [24] : FIND MAXIMUM AND MINIMUM ELEMENTS IN ARRAY
+function findMaximumNumberInArray(array = []) {
+    let maximum = array[0];
+
+    for (let i = 1; i < array.length; i++) {
+        if (maximum < array[i]) {
+            maximum = array[i];
+        }
+    }
+
+    console.log(maximum);
+}
