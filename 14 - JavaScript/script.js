@@ -71,8 +71,7 @@ function task6() {
 }
 
 // 7. Subset of a string
-function task7() {
-    let str = "dog";
+function task7(str) {
     let result = [];
     for (let i = 0; i < str.length; i++) {
         for (let j = i + 1; j <= str.length; j++) {
