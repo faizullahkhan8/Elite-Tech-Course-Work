@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Currency Ecchange Rate</title>
+        <link rel="stylesheet" href="style.css" />
+        <script
+            src="https://kit.fontawesome.com/eccaae25ac.js"
+            crossorigin="anonymous"
+        ></script>
+    </head>
+    <body>
+        <div class="container">
+            <div class="notch"></div>
+            <div class="nav">
+                <div class="nav-left">
+                    <p>9:41</p>
+                </div>
+                <div class="nav-right">
+                    <i class="fa-solid fa-signal"></i>
+                    <i class="fa-solid fa-wifi"></i>
+                    <i class="fa-solid fa-battery-half"></i>
+                </div>
+            </div>
+            <div class="back_change">
+                <div class="back_change_left">
+                    <i
+                        class="fa-solid fa-circle-chevron-left"
+                        style="font-size: 25px"
+                    ></i>
+                </div>
+                <div class="back_change_right">
+                    <p>0x3b5a...3f0c</p>
+                    <i class="fa-solid fa-caret-down"></i>
+                </div>
+            </div>
+            <div class="sub_container">
+                <div class="sub_container_top">
+                    <p>SWAP</p>
+                    <p>INFO</p>
+                </div>
+                <div class="currencies">
+                    <div class="currency">
+                        <div class="currency_left">
+                            <p>USD</p>
+                            <div class="LOGO">
+                                <i class="fa-solid fa-dollar-sign"></i>
+                            </div>
+                        </div>
+                        <div class="currency_right">
+                            <input
+                                autofocus
+                                type="number"
+                                name=""
+                                class="input"
+                                id="usdInput"
+                            />
+                        </div>
+                    </div>
+                    <div class="currency">
+                        <div class="currency_left">
+                            <p>PKR</p>
+                            <div class="LOGO">
+                                <i class="fa-solid fa-brazilian-real-sign"></i>
+                            </div>
+                        </div>
+                        <div class="currency_right">
+                            <h1 id="pkrH1Tag"></h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="button_section">
+                    <button class="button" id="calculate_currencies">
+                        Calculate
+                    </button>
+                </div>
+                <div class="buttom">
+                    <p>USD</p>
+                    <p>=</p>
+                    <p>1</p>
+                    <p>PKR</p>
+                    <p>=</p>
+                    <p id="pkr_pTag"></p>
+                </div>
+            </div>
+            <h1 style="text-align: center">
+                Developed by <br />
+                Faiz Ullah with
+                <i class="fa-solid fa-heart" style="color: #ff0000"></i>
+            </h1>
+        </div>
+    </body>
+    <script src="./script.js"></script>
+</html>
