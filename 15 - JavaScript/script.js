@@ -3,6 +3,7 @@ const pkrH1Tag = document.getElementById("pkrH1Tag");
 const pkr_pTag = document.getElementById("pkr_pTag");
 const baseCurrency_pTag = document.getElementById("baseCurrency_pTag");
 const base_currency_label = document.getElementById("base_currency_label");
+const date_pTag = document.getElementById("date_pTag");
 const calculate_currencies_btn = document.getElementById(
     "calculate_currencies"
 );
@@ -82,5 +83,35 @@ calculate_currencies_btn.onclick = () => {
     pkr_pTag.innerText = all_rates.PKR.toFixed(2);
 };
 
-// Initialize dropdown and fetch once
+setInterval(() => {
+    const date = new Date();
+    date_pTag.innerText = date.toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+    });
+}, 1000);
+
 populateBaseCurrencies();
+
+// Battery status code
+if ("getBattery" in navigator) {
+    navigator.getBattery().then(function (battery) {
+        // Find your battery icon element (example: the last .fa-battery-half)
+        const batteryIcon = document.querySelector(".fa-battery-half");
+        // Create a span to show percentage
+        let batterySpan = document.createElement("span");
+        batterySpan.id = "battery_percent";
+        batterySpan.style.marginLeft = "5px";
+        batterySpan.style.fontSize = "14px";
+        batteryIcon.parentNode.insertBefore(
+            batterySpan,
+            batteryIcon.nextSibling
+        );
+
+        function updateBattery() {
+            batterySpan.textContent = Math.round(battery.level * 100) + "%";
+        }
+        updateBattery();
+        battery.addEventListener("levelchange", updateBattery);
+    });
+}

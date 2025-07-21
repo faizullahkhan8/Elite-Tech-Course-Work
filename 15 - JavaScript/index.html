@@ -13,23 +13,26 @@
     <body>
         <div class="container">
             <div class="notch"></div>
+            <div class="camera"></div>
             <div class="nav">
                 <div class="nav-left">
-                    <p>9:41</p>
+                    <p id="date_pTag">9:41</p>
                 </div>
                 <div class="nav-right">
                     <i class="fa-solid fa-signal"></i>
-                    <i class="fa-solid fa-wifi"></i>
                     <i class="fa-solid fa-battery-half"></i>
                 </div>
             </div>
+            <div class="sub_container_top">
+                <h3 style="color: green">How to use :</h3>
+                <sub>
+                    <p>1. Select the base currency</p>
+                    <p>2. Enter the ammount</p>
+                    <p>3. Press the Calculate button</p>
+                </sub>
+            </div>
+            <label for="base_currency">Base currency</label>
             <div class="back_change">
-                <div class="back_change_left">
-                    <i
-                        class="fa-solid fa-circle-chevron-left"
-                        style="font-size: 25px"
-                    ></i>
-                </div>
                 <div class="back_change_right">
                     <select name="base_currency" id="base_currency">
                         <!-- this is comming dynamically from javascript -->
@@ -37,10 +40,6 @@
                 </div>
             </div>
             <div class="sub_container">
-                <div class="sub_container_top">
-                    <p>SWAP</p>
-                    <p>INFO</p>
-                </div>
                 <div class="currencies">
                     <div class="currency">
                         <div class="currency_left">
