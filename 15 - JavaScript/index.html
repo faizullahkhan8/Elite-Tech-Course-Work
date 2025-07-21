@@ -31,8 +31,9 @@
                     ></i>
                 </div>
                 <div class="back_change_right">
-                    <p>0x3b5a...3f0c</p>
-                    <i class="fa-solid fa-caret-down"></i>
+                    <select name="base_currency" id="base_currency">
+                        <!-- this is comming dynamically from javascript -->
+                    </select>
                 </div>
             </div>
             <div class="sub_container">
@@ -43,10 +44,7 @@
                 <div class="currencies">
                     <div class="currency">
                         <div class="currency_left">
-                            <p>USD</p>
-                            <div class="LOGO">
-                                <i class="fa-solid fa-dollar-sign"></i>
-                            </div>
+                            <p id="base_currency_label">USD</p>
                         </div>
                         <div class="currency_right">
                             <input
@@ -61,9 +59,6 @@
                     <div class="currency">
                         <div class="currency_left">
                             <p>PKR</p>
-                            <div class="LOGO">
-                                <i class="fa-solid fa-brazilian-real-sign"></i>
-                            </div>
                         </div>
                         <div class="currency_right">
                             <h1 id="pkrH1Tag"></h1>
@@ -76,7 +71,7 @@
                     </button>
                 </div>
                 <div class="buttom">
-                    <p>USD</p>
+                    <p id="baseCurrency_pTag">USD</p>
                     <p>=</p>
                     <p>1</p>
                     <p>PKR</p>
