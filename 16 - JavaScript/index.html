@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Wheater App</title>
+        <link rel="stylesheet" href="style.css" />
+        <script
+            src="https://kit.fontawesome.com/eccaae25ac.js"
+            crossorigin="anonymous"
+        ></script>
+    </head>
+    <body>
+        <div class="container">
+            <div class="camera-sections"></div>
+            <div class="power-btn"></div>
+            <div class="silent-btn"></div>
+            <div class="val-up-btn"></div>
+            <div class="val-down-btn"></div>
+            <div>
+                <div class="clock-bettery">
+                    <p id="clock">00:00 AM</p>
+                    <div>
+                        <div id="battery-icon">
+                            <i class="fa-solid fa-battery-full"></i>
+                        </div>
+                        <p id="battery-percentage">50%</p>
+                    </div>
+                </div>
+                <div class="top">
+                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                </div>
+            </div>
+            <div class="city-name">
+                <select id="citySelect">
+                    <option value="">Current Location</option>
+                    <option value="Bannu">Bannu</option>
+                    <option value="Karachi">Karachi</option>
+                    <option value="Lahore">Lahore</option>
+                    <option value="Islamabad">Islamabad</option>
+                    <option value="Rawalpindi">Rawalpindi</option>
+                    <option value="Faisalabad">Faisalabad</option>
+                    <option value="Multan">Multan</option>
+                    <option value="Peshawar">Peshawar</option>
+                    <option value="Quetta">Quetta</option>
+                    <option value="Sialkot">Sialkot</option>
+                    <option value="Gujranwala">Gujranwala</option>
+                    <option value="Hyderabad">Hyderabad</option>
+                    <option value="Bahawalpur">Bahawalpur</option>
+                    <option value="Sargodha">Sargodha</option>
+                    <option value="Sukkur">Sukkur</option>
+                    <option value="Abbottabad">Abbottabad</option>
+                    <option value="Mardan">Mardan</option>
+                    <option value="Mirpur">Mirpur</option>
+                    <option value="Gilgit">Gilgit</option>
+                    <option value="Skardu">Skardu</option>
+                    <option value="Muzaffarabad">Muzaffarabad</option>
+                </select>
+                <p id="day-time">SUNDAY 00:00 AM</p>
+            </div>
+            <div class="weather-status-icon">
+                <i
+                    id="weather-status-icon"
+                    class="fas fa-question"
+                    style="font-size: 5rem"
+                ></i>
+            </div>
+            <div class="centigrade">
+                <h2><span id="degree"></span>&deg; C</h2>
+                <p>
+                    <span id="greeting">GOOD MORNING</span> <br />
+                    Faiz Ullah Khan
+                </p>
+            </div>
+            <div class="bottom">
+                <div class="sunrise">
+                    <i
+                        class="fa-duotone fa-solid fa-mountain-sun"
+                        style="--fa-secondary-color: #ffd500; font-size: 1.5rem"
+                    ></i>
+                    <p>SUNRISE</p>
+                    <p id="sunrise">00:00</p>
+                </div>
+                <div class="wind">
+                    <i class="fas fa-wind" style="font-size: 1.5rem"></i>
+                    <p>WIND</p>
+                    <p><span id="wind"></span> m/s</p>
+                </div>
+                <div class="temprature">
+                    <i
+                        class="fa-duotone fa-solid fa-temperature-full"
+                        style="font-size: 1.5rem"
+                    ></i>
+
+                    <p>TEMPRATURE</p>
+                    <p><span id="degree"></span>&deg;</p>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script src="script.js"></script>
+</html>
