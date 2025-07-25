@@ -42,7 +42,7 @@ window.addEventListener("load", (e) => {
 const get_weather = async (city) => {
     if (!city) return;
 
-    const API_STRING_FOR_LAT_LON = `http://api.openweathermap.org/geo/1.0/direct?q=${city},PK&limit=1&appid=${API_KEY}`;
+    const API_STRING_FOR_LAT_LON = `https://api.openweathermap.org/geo/1.0/direct?q=${city},PK&limit=1&appid=${API_KEY}`;
 
     try {
         const lat_log_response = await fetch(API_STRING_FOR_LAT_LON);
@@ -59,8 +59,6 @@ const get_weather_from_cords = async (lat, lon) => {
     try {
         const response = await fetch(API_STIRNG_FOR_WEATHER);
         const data = await response.json();
-
-        console.log(data);
 
         // get suitable icon from the api
         // let iconUrl = `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;

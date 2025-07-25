@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Quiz - App</title>
+        <link rel="stylesheet" href="style.css" />
+        <script
+            src="https://kit.fontawesome.com/eccaae25ac.js"
+            crossorigin="anonymous"
+        ></script>
+    </head>
+    <body>
+        <div class="container">
+            <div class="crunch"></div>
+            <div class="top">
+                <div class="top-left">
+                    <i class="fa-solid fa-xmark"></i>
+                </div>
+                <div class="top-right">
+                    <div class="progress-bar-container">
+                        <div id="progress-bar"></div>
+                    </div>
+                    <div class="progress-bar-numbers" id="progress-numbers">
+                        1 / 10
+                    </div>
+                </div>
+            </div>
+            <div class="question">
+                <p id="question">Loading...</p>
+            </div>
+            <div id="answers" class="answers-container"></div>
+            <div id="error">
+                <i class="fa-solid fa-circle-exclamation"></i>
+                <p>Please select one of these to go further.</p>
+            </div>
+            <div id="next-btn" class="next-button">
+                <button>Next</button>
+            </div>
+        </div>
+    </body>
+    <script type="module" src="./script.js"></script>
+</html>
+
+<!-- answer-correct-->
+<!-- answer-error-->
+<!-- <div class="answer">
+    <p>Quaiz Azam Ali Jinnah</p>
+    <div class="checkbox">
+        <i class="fa-solid fa-check"></i>
+        <i class="fa-solid fa-xmark"></i>
+    </div>
+</div> -->
