@@ -1,0 +1,24 @@
+:root {
+    --base-bg-color: #ebece9;
+    --button-color: #242424;
+    --fore-bg-color: #fafafa;
+
+    --default-padding: 3rem;
+}
+
+.technology {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+
+    background: var(--fore-bg-color);
+
+    border-bottom-left-radius: 80px;
+    border-bottom-right-radius: 80px;
+}
+
+.technology > img {
+    width: 8rem;
+}

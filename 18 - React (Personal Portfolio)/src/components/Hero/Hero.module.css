@@ -1,0 +1,78 @@
+:root {
+    --base-bg-color: #ebece9;
+    --button-color: #242424;
+    --fore-bg-color: #fafafa;
+
+    --default-padding: 3rem;
+}
+
+.heroSection {
+    width: 100%;
+
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    gap: 1rem;
+
+    padding: var(--default-padding);
+
+    background: var(--base-bg-color);
+
+    border-bottom-left-radius: 50px;
+    border-bottom-right-radius: 50px;
+
+    border-bottom: 1px solid gray;
+}
+
+.heroNavbar {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.heroNavbar > div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-weight: 500;
+
+    gap: 1rem;
+}
+
+.infoSection {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.infoSection > img {
+    width: 13rem;
+    height: 13rem;
+
+    object-fit: cover;
+
+    border-radius: 50%;
+    border: 5px solid var(--fore-bg-color);
+}
+
+.infoSection > h1 {
+    font-size: 40px;
+}
+
+.button {
+    width: 5rem;
+    height: 2rem;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    border-radius: 30px;
+    border: none;
+    box-shadow: 0.1px 0.1px 5px 0px gray;
+    background: var(--fore-bg-color);
+}

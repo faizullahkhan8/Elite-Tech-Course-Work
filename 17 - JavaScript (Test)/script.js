@@ -23,7 +23,7 @@ const displayQuestion = () => {
         const answerContainer = document.createElement("div");
         answerContainer.classList.add("answer");
 
-        // creating anwer p tag
+        // creating answer p tag
         const answerPTag = document.createElement("p");
         answerPTag.innerText = ans.text;
 
@@ -68,7 +68,7 @@ const displayQuestion = () => {
     });
 };
 
-nextBtn.addEventListener("click", (e) => {
+nextBtn.addEventListener("click", () => {
     if (currentQuestionIndex !== questions.length - 1) {
         if (scores[currentQuestionIndex] !== undefined) {
             errorDiv.style.display = "none";
