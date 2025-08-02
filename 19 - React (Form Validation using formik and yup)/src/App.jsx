@@ -106,7 +106,7 @@ function App() {
                                     </div>
                                 )}
                         </div>
-                        <button>Register</button>
+                        <button type="submit">Register</button>
                     </form>
                 </div>
             </div>
