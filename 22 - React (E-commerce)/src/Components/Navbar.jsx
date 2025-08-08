@@ -106,10 +106,7 @@ const Navbar = () => {
                                     className="shadow shadow-black/50 cursor-pointer p-1 rounded w-[7rem] text-center flex items-center justify-center gap-2"
                                     variants={itemVariants}
                                 >
-                                    {item}
-                                    {["Home", "Shop", "Product"].includes(
-                                        item
-                                    ) && <FaChevronDown />}
+                                    <Link to={"/"}>{item}</Link>
                                 </motion.li>
                             ))}
                         </motion.ul>
@@ -240,10 +237,7 @@ const Navbar = () => {
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ delay: 1 + index * 0.1 }}
                                 >
-                                    {item}
-                                    {["Home", "Shop", "Product"].includes(
-                                        item
-                                    ) && <FaChevronDown />}
+                                    <Link to={"/"}>{item}</Link>
                                 </motion.li>
                             ))}
                         </ul>
