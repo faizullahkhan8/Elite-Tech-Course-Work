@@ -1,4 +1,4 @@
-import { createBrowserRouter, Outlet } from "react-router-dom";
+import { createBrowserRouter } from "react-router-dom";
 import Home from "../Pages/Home";
 import Layout from "./Layout.jsx";
 import SingleProduct from "../Pages/SingleProduct.jsx";
@@ -6,6 +6,7 @@ import Cart from "../Pages/Cart.jsx";
 import Login from "../Pages/Login.jsx";
 import Register from "../Pages/Register.jsx";
 import NotFound from "../Pages/NotFound.jsx";
+import ProtectedRoute from "./ProtectedRoute.jsx";
 
 export const router = createBrowserRouter([
     {
@@ -14,19 +15,27 @@ export const router = createBrowserRouter([
         children: [
             {
                 path: "/",
-                element: <Home />,
+                element: (
+                    <ProtectedRoute>
+                        <Home />
+                    </ProtectedRoute>
+                ),
             },
             {
                 path: "/product/:id",
-                element: <SingleProduct />,
+                element: (
+                    <ProtectedRoute>
+                        <SingleProduct />
+                    </ProtectedRoute>
+                ),
             },
             {
                 path: "/cart",
-                element: <Cart />,
-            },
-            {
-                path: "/product/:id",
-                element: <h1>Single product page</h1>,
+                element: (
+                    <ProtectedRoute>
+                        <Cart />
+                    </ProtectedRoute>
+                ),
             },
             {
                 path: "/login",

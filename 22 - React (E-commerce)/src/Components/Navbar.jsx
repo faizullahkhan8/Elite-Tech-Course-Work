@@ -7,6 +7,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { addCategory } from "../Feature/CategorySlice";
 import axios from "axios";
+import { clearUser } from "../Feature/UserSlice";
+import { toast } from "react-toastify";
 
 const navLinks = ["Home", "Shop", "Product", "Blog", "Contact"];
 
@@ -16,6 +18,7 @@ const Navbar = () => {
     const [isCategoryOpen, setIsCategoryOpen] = useState(false);
     const cartItems = useSelector((state) => state.Cart);
     const dispatch = useDispatch();
+    const isAuthenticated = useSelector((state) => state.User.id);
 
     useEffect(() => {
         (async () => {
@@ -71,18 +74,35 @@ const Navbar = () => {
                             className="flex items-center justify-center gap-4"
                             variants={itemVariants}
                         >
-                            <Link
-                                to={"/login"}
-                                className="cursor-pointer rounded relative gap-2 p-3 sm:p-2 bg-dark text-white"
-                            >
-                                Login
-                            </Link>
-                            <Link
-                                to={"/register"}
-                                className="cursor-pointer rounded relative gap-2 p-3 sm:p-2 bg-dark text-white"
-                            >
-                                Sign-up
-                            </Link>
+                            {isAuthenticated ? (
+                                <button
+                                    onClick={() => {
+                                        dispatch(clearUser());
+                                        setIsSideBarOpen(false);
+                                        toast.success(
+                                            "User logout successfully"
+                                        );
+                                    }}
+                                    className="cursor-pointer rounded relative gap-2 p-3 sm:p-2 bg-red-500 text-white"
+                                >
+                                    Logout
+                                </button>
+                            ) : (
+                                <>
+                                    <Link
+                                        to={"/login"}
+                                        className="cursor-pointer rounded relative gap-2 p-3 sm:p-2 bg-dark text-white"
+                                    >
+                                        Login
+                                    </Link>
+                                    <Link
+                                        to={"/register"}
+                                        className="cursor-pointer rounded relative gap-2 p-3 sm:p-2 bg-dark text-white"
+                                    >
+                                        Sign-up
+                                    </Link>
+                                </>
+                            )}
                             <FaHeart className="text-2xl cursor-pointer text-red-600" />
                             <Link to="/cart">
                                 <FaCartShopping className="text-2xl cursor-pointer" />
@@ -189,18 +209,33 @@ const Navbar = () => {
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.8 }}
                     >
-                        <Link
-                            to={"/login"}
-                            className="cursor-pointer rounded relative gap-2 p-3 sm:p-2 bg-dark text-white hidden sm:block"
-                        >
-                            Login
-                        </Link>
-                        <Link
-                            to={"/register"}
-                            className="cursor-pointer rounded relative gap-2 p-3 sm:p-2 bg-dark text-white hidden sm:block"
-                        >
-                            Sign-up
-                        </Link>
+                        {isAuthenticated ? (
+                            <button
+                                onClick={() => {
+                                    dispatch(clearUser());
+                                    setIsSideBarOpen(false);
+                                    toast.success("User logout successfully");
+                                }}
+                                className="cursor-pointer rounded relative gap-2 p-3 sm:p-2 bg-red-500 text-white"
+                            >
+                                Logout
+                            </button>
+                        ) : (
+                            <>
+                                <Link
+                                    to={"/login"}
+                                    className="cursor-pointer rounded relative gap-2 p-3 sm:p-2 bg-dark text-white block max-sm:hidden"
+                                >
+                                    Login
+                                </Link>
+                                <Link
+                                    to={"/register"}
+                                    className="cursor-pointer rounded relative gap-2 p-3 sm:p-2 bg-dark text-white block max-sm:hidden"
+                                >
+                                    Sign-up
+                                </Link>
+                            </>
+                        )}
                         <FaHeart className="text-2xl cursor-pointer text-red-600 hidden sm:block" />
                         <Link to="/cart">
                             <FaCartShopping className="text-2xl cursor-pointer" />
