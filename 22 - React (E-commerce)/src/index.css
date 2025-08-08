@@ -1,0 +1,43 @@
+@import "tailwindcss";
+
+.bg-golden {
+    background-color: #cfa663;
+}
+
+.bg-gray {
+    background-color: #f4f4f4;
+}
+
+.bg-white {
+    background-color: #ffffff;
+}
+
+.bg-dark {
+    background-color: #1e1e1e;
+}
+
+.text-golden {
+    color: #cfa663;
+}
+
+.text-dark {
+    color: #1e1e1e;
+}
+
+.text-light {
+    color: #ffffff;
+}
+
+.border-primary {
+    border-color: #cfa663;
+}
+
+.default-padding {
+    padding: 10px 5rem;
+}
+
+@media screen and (max-width: 40rem) {
+    .default-padding {
+        padding: 10px 5rem;
+    }
+}
