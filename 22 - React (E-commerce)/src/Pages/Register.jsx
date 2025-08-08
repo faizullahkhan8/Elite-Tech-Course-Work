@@ -101,6 +101,7 @@ const AnimatedRegister = () => {
                         </label>
                         <input
                             type="text"
+                            name="name"
                             value={fullName}
                             onChange={(e) => setFullName(e.target.value)}
                             className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-primary"
