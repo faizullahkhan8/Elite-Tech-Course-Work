@@ -40,7 +40,7 @@ const SingleProduct = () => {
 
     return (
         <div>
-            <div className="default-padding flex gap-16">
+            <div className="default-padding flex max-sm:flex-col gap-16">
                 <div>
                     <img src={productData.image} />
                 </div>
