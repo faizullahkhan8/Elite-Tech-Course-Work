@@ -143,16 +143,18 @@ const Navbar = () => {
                 {/* Top Row */}
                 <div className="flex items-center justify-between">
                     {/* Logo */}
-                    <motion.div
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 0.4 }}
-                    >
-                        <span>LOGO</span>
-                        <span className="text-xl ml-2 font-bold">
-                            Elite-Ecommerce
-                        </span>
-                    </motion.div>
+                    <Link>
+                        <motion.div
+                            initial={{ opacity: 0, x: -20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: 0.4 }}
+                        >
+                            <span>LOGO</span>
+                            <span className="text-xl ml-2 font-bold">
+                                Elite-Ecommerce
+                            </span>
+                        </motion.div>
+                    </Link>
 
                     {/* Search */}
                     <motion.div
