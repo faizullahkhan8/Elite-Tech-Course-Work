@@ -23,7 +23,6 @@ const Navbar = () => {
                 const response = await axios(
                     "https://fakestoreapi.com/products/categories"
                 );
-                console.log(response.data);
                 setCategories(response.data);
             } catch (error) {
                 console.error("Error fetching categories:", error);
@@ -72,6 +71,18 @@ const Navbar = () => {
                             className="flex items-center justify-center gap-4"
                             variants={itemVariants}
                         >
+                            <Link
+                                to={"/login"}
+                                className="cursor-pointer rounded relative gap-2 p-3 sm:p-2 bg-dark text-white"
+                            >
+                                Login
+                            </Link>
+                            <Link
+                                to={"/register"}
+                                className="cursor-pointer rounded relative gap-2 p-3 sm:p-2 bg-dark text-white"
+                            >
+                                Sign-up
+                            </Link>
                             <FaHeart className="text-2xl cursor-pointer text-red-600" />
                             <Link to="/cart">
                                 <FaCartShopping className="text-2xl cursor-pointer" />
@@ -178,6 +189,18 @@ const Navbar = () => {
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.8 }}
                     >
+                        <Link
+                            to={"/login"}
+                            className="cursor-pointer rounded relative gap-2 p-3 sm:p-2 bg-dark text-white hidden sm:block"
+                        >
+                            Login
+                        </Link>
+                        <Link
+                            to={"/register"}
+                            className="cursor-pointer rounded relative gap-2 p-3 sm:p-2 bg-dark text-white hidden sm:block"
+                        >
+                            Sign-up
+                        </Link>
                         <FaHeart className="text-2xl cursor-pointer text-red-600 hidden sm:block" />
                         <Link to="/cart">
                             <FaCartShopping className="text-2xl cursor-pointer" />
