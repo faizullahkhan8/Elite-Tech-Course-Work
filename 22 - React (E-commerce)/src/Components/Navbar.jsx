@@ -1,16 +1,35 @@
 /* eslint-disable no-unused-vars */
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FaBars, FaChevronDown, FaHeart, FaSearch } from "react-icons/fa";
 import { FaCartShopping } from "react-icons/fa6";
 import { motion, AnimatePresence } from "framer-motion";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import { addCategory } from "../Feature/CategorySlice";
+import axios from "axios";
 
 const navLinks = ["Home", "Shop", "Product", "Blog", "Contact"];
 
 const Navbar = () => {
     const [isSideBarOpen, setIsSideBarOpen] = useState(false);
+    const [categories, setCategories] = useState([]);
+    const [isCategoryOpen, setIsCategoryOpen] = useState(false);
+    const cartItems = useSelector((state) => state.Cart);
+    const dispatch = useDispatch();
 
-    const cart = useSelector((state) => state.Cart);
+    useEffect(() => {
+        (async () => {
+            try {
+                const response = await axios(
+                    "https://fakestoreapi.com/products/categories"
+                );
+                console.log(response.data);
+                setCategories(response.data);
+            } catch (error) {
+                console.error("Error fetching categories:", error);
+            }
+        })();
+    }, []);
 
     const sidebarVariants = {
         hidden: { opacity: 0, x: "100%" },
@@ -54,10 +73,12 @@ const Navbar = () => {
                             variants={itemVariants}
                         >
                             <FaHeart className="text-2xl cursor-pointer text-red-600" />
-                            <FaCartShopping className="text-2xl cursor-pointer" />
+                            <Link to="/cart">
+                                <FaCartShopping className="text-2xl cursor-pointer" />
+                            </Link>
                             <div className="flex flex-col items-center">
                                 <p className="flex items-center justify-center rounded-full w-6 h-6 bg-golden text-white">
-                                    {cart.length}
+                                    {cartItems.length}
                                 </p>
                                 <p className="text-sm">My cart</p>
                             </div>
@@ -101,7 +122,7 @@ const Navbar = () => {
                 initial={{ opacity: 0, y: -30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
-                className="bg-gray-100 default-padding"
+                className="bg-gray default-padding"
             >
                 <div className="flex flex-col sm:flex-row text-center sm:text-left gap-2 sm:gap-4 justify-between">
                     <p>Welcome to Elite-Ecommerce Shopping Store</p>
@@ -159,10 +180,12 @@ const Navbar = () => {
                         transition={{ delay: 0.8 }}
                     >
                         <FaHeart className="text-2xl cursor-pointer text-red-600 hidden sm:block" />
-                        <FaCartShopping className="text-2xl cursor-pointer" />
+                        <Link to="/cart">
+                            <FaCartShopping className="text-2xl cursor-pointer" />
+                        </Link>
                         <div className="flex-col items-center hidden sm:flex">
                             <p className="flex items-center justify-center rounded-full w-6 h-6 bg-golden text-white">
-                                0
+                                {cartItems.length}
                             </p>
                             <p className="text-sm">My cart</p>
                         </div>
@@ -182,10 +205,29 @@ const Navbar = () => {
                     transition={{ delay: 1 }}
                     className="flex items-center gap-4 justify-between"
                 >
-                    <div className="cursor-pointer rounded flex items-center gap-2 p-3 sm:p-2 bg-dark text-white">
+                    <div
+                        onClick={() => setIsCategoryOpen(!isCategoryOpen)}
+                        className="cursor-pointer rounded relative flex items-center gap-2 p-3 sm:p-2 bg-dark text-white"
+                    >
                         <FaBars />
                         Categories
                         <FaChevronDown />
+                        {isCategoryOpen && (
+                            <ul className="absolute z-40 left-0 top-full mt-2 bg-white text-dark shadow-md w-48 rounded p-2 space-y-1">
+                                {categories.map((category, index) => (
+                                    <li
+                                        key={index}
+                                        onClick={() => {
+                                            dispatch(addCategory(category));
+                                            setIsCategoryOpen(false);
+                                        }}
+                                        className="cursor-pointer hover:text-golden capitalize"
+                                    >
+                                        {category}
+                                    </li>
+                                ))}
+                            </ul>
+                        )}
                     </div>
 
                     <div className="hidden md:block">

@@ -1,5 +1,7 @@
 import { useDispatch } from "react-redux";
 import { addItem } from "../Feature/CartSlice";
+import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Card = ({
     imageUrl,
@@ -8,10 +10,22 @@ const Card = ({
     isSale = true,
     discount = 15,
     productId,
+    description,
 }) => {
     const dispatch = useDispatch();
     const handleAddToCart = () => {
-        dispatch(addItem({ id: productId, quantity: 1 }));
+        dispatch(
+            addItem({
+                id: productId,
+                quantity: 1,
+                title: name,
+                price: price,
+                image: imageUrl,
+                description,
+            })
+        );
+
+        toast.success("Item added to cart");
     };
     return (
         <div className="min-h-max relative flex flex-col gap-2">
@@ -26,9 +40,9 @@ const Card = ({
                 </div>
             )}
 
-            <div>
+            <Link to={`/product/${productId}`}>
                 <img src={imageUrl} className="w-full h-[12rem] rounded" />
-            </div>
+            </Link>
             <h1 className="text-xl font-semibold w-full">{name}</h1>
             <div className="flex items-center justify-between">
                 <p className="text-golden">$ {price}</p>

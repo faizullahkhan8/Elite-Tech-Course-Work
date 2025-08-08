@@ -1,8 +1,10 @@
 /* eslint-disable no-unused-vars */
 import Card from "../Components/Card";
 import { motion, useInView } from "framer-motion";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import axios from "axios";
+import Loading from "../Components/Loading";
+import { useSelector } from "react-redux";
 
 const AnimatedCard = ({ children }) => {
     const ref = useRef(null);
@@ -22,16 +24,47 @@ const AnimatedCard = ({ children }) => {
 
 const Home = () => {
     const [data, setData] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-    useState(() => {
+    const category = useSelector((state) => state.Category);
+
+    useEffect(() => {
         (async () => {
-            const response = await axios.get(
-                "https://fakestoreapi.com/products"
-            );
+            setLoading(true);
+            try {
+                let response;
+                if (category.length > 0) {
+                    response = await axios.get(
+                        `https://fakestoreapi.com/products/category/${category}`,
+                        {
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                        }
+                    );
 
-            setData(response.data);
+                    console.log(response.data);
+                } else {
+                    response = await axios.get(
+                        "https://fakestoreapi.com/products",
+                        {
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                        }
+                    );
+                }
+                setData(response.data);
+                setLoading(false);
+            } catch (error) {
+                console.error("Error fetching products:", error);
+            }
         })();
-    }, []);
+    }, [category]);
+
+    if (loading) {
+        return <Loading />;
+    }
 
     return (
         <div className="default-padding">
@@ -55,6 +88,8 @@ const Home = () => {
                                 imageUrl={product.image}
                                 name={product.title}
                                 price={product.price}
+                                productId={product.id}
+                                description={product.description}
                             />
                         </AnimatedCard>
                     ))}
