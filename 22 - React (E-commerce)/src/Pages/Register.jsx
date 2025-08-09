@@ -76,6 +76,17 @@ const AnimatedRegister = () => {
                     Create Account
                 </motion.h2>
                 <motion.p
+                    className="text-center text-red-600 text-sm mb-4"
+                    variants={fadeUp}
+                    initial="hidden"
+                    animate="visible"
+                    transition={{ delay: 0.15 }}
+                >
+                    Note: This registration is for demo purposes only. Not
+                    acually registered. and will be deleted after you leave the
+                    website.
+                </motion.p>
+                <motion.p
                     className="text-center text-gray-600 text-sm mb-6"
                     variants={fadeUp}
                     initial="hidden"

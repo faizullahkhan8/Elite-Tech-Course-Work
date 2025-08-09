@@ -103,7 +103,14 @@ const Navbar = () => {
                                     </Link>
                                 </>
                             )}
-                            <FaHeart className="text-2xl cursor-pointer text-red-600" />
+                            <FaHeart
+                                className="text-2xl cursor-pointer text-red-600"
+                                onClick={() => {
+                                    toast.info(
+                                        "Wishlist feature is not implemented yet."
+                                    );
+                                }}
+                            />
                             <Link to="/cart">
                                 <FaCartShopping className="text-2xl cursor-pointer" />
                             </Link>
@@ -111,7 +118,7 @@ const Navbar = () => {
                                 <p className="flex items-center justify-center rounded-full w-6 h-6 bg-golden text-white">
                                     {cartItems.length}
                                 </p>
-                                <p className="text-sm">My cart</p>
+                                <p className="text-sm">Cart items</p>
                             </div>
                         </motion.div>
 
@@ -121,8 +128,8 @@ const Navbar = () => {
                         >
                             <input
                                 type="text"
-                                placeholder="Search..."
-                                className="outline-none text-xl w-full"
+                                placeholder="Note: This search is not functional."
+                                className="outline-none text-xl w-full placeholder:text-red-500"
                             />
                             <FaSearch className="text-xl cursor-pointer" />
                         </motion.div>
@@ -155,7 +162,14 @@ const Navbar = () => {
                 <div className="flex flex-col sm:flex-row text-center sm:text-left gap-2 sm:gap-4 justify-between">
                     <p>Welcome to Elite-Ecommerce Shopping Store</p>
                     <div className="flex items-center justify-center gap-4">
-                        <select className="outline-none border rounded p-1">
+                        <select
+                            className="outline-none border rounded p-1"
+                            onChange={() =>
+                                toast.info(
+                                    "This feature is not implemented yet."
+                                )
+                            }
+                        >
                             <option>My Account 1</option>
                             <option>My Account 2</option>
                         </select>
@@ -196,8 +210,8 @@ const Navbar = () => {
                     >
                         <input
                             type="text"
-                            placeholder="Search..."
-                            className="outline-none text-xl w-full"
+                            placeholder="Note: This search is not functional."
+                            className="outline-none text-xl w-full placeholder:text-red-500"
                         />
                         <FaSearch className="text-xl cursor-pointer" />
                     </motion.div>
@@ -236,7 +250,14 @@ const Navbar = () => {
                                 </Link>
                             </>
                         )}
-                        <FaHeart className="text-2xl cursor-pointer text-red-600 hidden sm:block" />
+                        <FaHeart
+                            onClick={() =>
+                                toast.info(
+                                    "Wishlist feature is not implemented yet."
+                                )
+                            }
+                            className="text-2xl cursor-pointer text-red-600 hidden sm:block"
+                        />
                         <Link to="/cart">
                             <FaCartShopping className="text-2xl cursor-pointer" />
                         </Link>
@@ -244,7 +265,7 @@ const Navbar = () => {
                             <p className="flex items-center justify-center rounded-full w-6 h-6 bg-golden text-white">
                                 {cartItems.length}
                             </p>
-                            <p className="text-sm">My cart</p>
+                            <p className="text-sm">Cart Items</p>
                         </div>
                         <button
                             onClick={() => setIsSideBarOpen((prev) => !prev)}
@@ -292,12 +313,38 @@ const Navbar = () => {
                             {navLinks.map((item, index) => (
                                 <motion.li
                                     key={index}
-                                    className="shadow shadow-black/50 cursor-pointer p-1 rounded w-[7rem] text-center flex items-center justify-center gap-2"
+                                    className="relative overflow-hidden cursor-pointer rounded w-[7rem] text-center flex items-center justify-center gap-2 group"
                                     initial={{ opacity: 0, y: 10 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ delay: 1 + index * 0.1 }}
                                 >
-                                    <Link to={"/"}>{item}</Link>
+                                    <Link
+                                        to={item === "Home" ? "/" : "#"}
+                                        onClick={() => {
+                                            if (item !== "Home")
+                                                toast.info(
+                                                    "This feature is not implemented yet."
+                                                );
+                                        }}
+                                        className="relative z-30 px-4 py-2 inline-block transition-all duration-300"
+                                    >
+                                        {/* Text that ghosts on hover */}
+                                        <span className="block transition-opacity duration-300 group-hover:opacity-100">
+                                            {item}
+                                        </span>
+                                    </Link>
+
+                                    {/* circle background (pointer-events-none so it doesn't block clicks) */}
+                                    <span className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                                        <span
+                                            className="
+              absolute w-14 h-14 rounded-full transform scale-0
+              group-hover:scale-[6] group-hover:-translate-y-3
+              transition-all duration-700 ease-out
+              bg-golden
+            "
+                                        />
+                                    </span>
                                 </motion.li>
                             ))}
                         </ul>
