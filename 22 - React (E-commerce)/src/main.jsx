@@ -5,6 +5,7 @@ import { Provider } from "react-redux";
 import store from "./Store/Store.jsx";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import FloatingWhatsApp from "./Components/FlotingWhatsapp.jsx";
 
 createRoot(document.getElementById("root")).render(
     <Provider store={store}>
@@ -21,5 +22,6 @@ createRoot(document.getElementById("root")).render(
             theme="light"
         />
         <App />
+        <FloatingWhatsApp />
     </Provider>
 );

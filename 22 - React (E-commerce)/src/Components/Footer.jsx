@@ -11,6 +11,7 @@ import {
 } from "react-icons/fa";
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
+import { Link } from "react-router-dom";
 
 const FadeInSection = ({ children }) => {
     const ref = useRef(null);
@@ -146,6 +147,29 @@ const Footer = () => {
                     <div className="text-center">
                         Copyright @ {new Date().getFullYear()} Elite All Rights
                         Reserved.
+                    </div>
+                    <div className="text-center">
+                        Made with <span className="text-red-500">❤</span> by
+                        <Link
+                            to={"https://faiz-ullah-khan-portfolio.vercel.app/"}
+                            className="text-golden font-semibold"
+                        >
+                            {" "}
+                            Faiz Ullah Khan
+                        </Link>
+                        <br />
+                        <Link
+                            to={
+                                "https://wa.me/923328753452?text=" +
+                                encodeURIComponent("Assalam-u-ghalikum!")
+                            }
+                            className="text-golden font-semibold"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label="WhatsApp"
+                        >
+                            Send AOA to WhatsApp
+                        </Link>
                     </div>
                 </div>
             </div>
