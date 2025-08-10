@@ -1,4 +1,11 @@
-import { FaSearch, FaFacebookMessenger, FaBell, FaBars } from "react-icons/fa";
+import {
+    FaSearch,
+    FaFacebookMessenger,
+    FaBell,
+    FaBars,
+    FaArrowRight,
+    FaArrowLeft,
+} from "react-icons/fa";
 import { Link } from "react-router";
 
 export default function Navbar() {
@@ -7,7 +14,13 @@ export default function Navbar() {
 
     return (
         <div className="flex items-center justify-between bg-white px-4 py-2 shadow sticky top-0 z-50">
-            <h1 className="text-xl font-bold">Friends.</h1>
+            <Link
+                to={"/"}
+                className="text-xl font-bold flex items-center gap-2"
+            >
+                <FaArrowLeft />
+                Lets Connekt
+            </Link>
 
             {/* Search Bar */}
             <div className="flex items-center bg-gray-100 rounded-full px-3 py-1 w-1/2">
@@ -21,7 +34,6 @@ export default function Navbar() {
 
             {/* Icons */}
             <div className="flex items-center space-x-4">
-                <FaFacebookMessenger className="text-gray-600" size={20} />
                 <FaBell className="text-gray-600" size={20} />
                 {/* if isMobile then open the sidesinfo.jsx in abosule otherwise link goto /profle */}
 
