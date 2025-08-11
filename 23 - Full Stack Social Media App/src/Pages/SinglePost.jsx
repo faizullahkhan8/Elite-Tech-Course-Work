@@ -1,3 +1,6 @@
+import { FaShare, FaThumbsUp } from "react-icons/fa";
+import { FaMessage } from "react-icons/fa6";
+
 const SinglePost = ({ post }) => {
     if (!post) {
         // Example placeholder if no post is passed
@@ -10,8 +13,8 @@ const SinglePost = ({ post }) => {
     }
 
     return (
-        <div className="flex justify-center mt-10 px-4">
-            <div className="bg-white shadow-lg rounded-2xl p-6 w-full max-w-2xl">
+        <div className="flex flex-1 px-4">
+            <div className="bg-white shadow-lg rounded-2xl p-6 w-full">
                 {/* User Info */}
                 <div className="flex items-center mb-4">
                     <img
@@ -41,9 +44,15 @@ const SinglePost = ({ post }) => {
 
                 {/* Actions */}
                 <div className="flex justify-between text-gray-500 text-sm">
-                    <button className="hover:text-green-500">👍 Like</button>
-                    <button className="hover:text-green-500">💬 Comment</button>
-                    <button className="hover:text-green-500">↪ Share</button>
+                    <button className="hover:text-green-500 flex items-center justify-between gap-4">
+                        <FaThumbsUp /> Like
+                    </button>
+                    <button className="hover:text-green-500 flex items-center justify-between gap-4">
+                        <FaMessage /> Comment
+                    </button>
+                    <button className="hover:text-green-500 flex items-center justify-between gap-4">
+                        <FaShare /> Share
+                    </button>
                 </div>
             </div>
         </div>

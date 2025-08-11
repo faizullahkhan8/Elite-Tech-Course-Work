@@ -1,4 +1,5 @@
 import { FaHeart, FaThumbsUp, FaSmile } from "react-icons/fa";
+import { Link } from "react-router";
 
 export default function Post({ name, time, text, image, likes }) {
     return (
@@ -16,7 +17,9 @@ export default function Post({ name, time, text, image, likes }) {
             </div>
             <p className="mb-3">{text}</p>
             {image && (
-                <img src={image} alt="Post" className="rounded-lg mb-3" />
+                <Link to={`/post/1`}>
+                    <img src={image} alt="Post" className="rounded-lg mb-3" />
+                </Link>
             )}
             <div className="flex items-center justify-between text-gray-600 text-sm">
                 <div className="flex items-center space-x-2">

@@ -13,7 +13,7 @@ export default function CreatePost({ onSubmit }) {
     };
 
     return (
-        <div className="flex justify-center mt-8">
+        <div className="flex justify-center flex-1 mt-8">
             <div className="bg-white dark:bg-gray-900 shadow-lg rounded-2xl p-6 w-full max-w-lg border border-gray-200 dark:border-gray-700">
                 <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4">
                     Create a Post
