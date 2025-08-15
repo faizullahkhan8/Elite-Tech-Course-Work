@@ -1,7 +1,10 @@
-import { FaArrowLeft } from "react-icons/fa";
+import { FaArrowLeft, FaSignOutAlt, FaThumbsUp, FaUsers } from "react-icons/fa";
 import { Link } from "react-router";
+import { useFirebase } from "../../Contexts/FirebaseContext";
+import { FaGear } from "react-icons/fa6";
 
 export default function SideInfo() {
+    const { logoutUser } = useFirebase();
     const user = {
         name: "Faiz Ullah Khan",
         profilePic: "/assets/profile.jpg",
@@ -9,14 +12,9 @@ export default function SideInfo() {
 
     // Merged Left + Right sidebar references
     const links = [
-        { label: "Friends", path: "/friends" },
-        { label: "Groups", path: "/groups" },
-        { label: "Saved", path: "/saved" },
-        { label: "Marketplace", path: "/marketplace" },
-        { label: "Events", path: "/events" },
-        { label: "Pages", path: "/pages" },
-        { label: "Settings", path: "/settings" },
-        { label: "Help & Support", path: "/help" },
+        { label: "Friends", path: "/friends", icon: <FaUsers /> },
+        { label: "Likes", path: "/groups", icon: <FaThumbsUp /> },
+        { label: "Settings", path: "/settings", icon: <FaGear /> },
     ];
 
     return (
@@ -50,11 +48,18 @@ export default function SideInfo() {
                     <Link
                         key={idx}
                         to={item.path}
-                        className="block bg-white rounded-lg shadow-sm p-3 text-gray-700 font-medium hover:bg-gray-100 transition"
+                        className="flex items-center justify-start gap-4 bg-white rounded-lg shadow-sm p-3 text-gray-700 font-medium hover:bg-gray-100 transition"
                     >
+                        {item.icon}
                         {item.label}
                     </Link>
                 ))}
+            </div>
+            <div className="mt-3 space-y-2 px-3" onClick={logoutUser}>
+                <div className="flex items-center justify-start gap-4 bg-white rounded-lg shadow-sm p-3 text-gray-700 font-medium hover:bg-gray-100 transition">
+                    <FaSignOutAlt className="rotate-180" />
+                    <span className="text-red-500">Logout</span>
+                </div>
             </div>
         </div>
     );

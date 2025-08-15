@@ -1,5 +1,4 @@
-import React from "react";
-import { createBrowserRouter, Outlet } from "react-router";
+import { createBrowserRouter, Navigate, Outlet } from "react-router-dom";
 import Navbar from "./Components/Home/Navbar";
 import Home from "./Components/Home/Feed";
 import Login from "./Pages/Login";
@@ -11,10 +10,13 @@ import CreatePost from "./Pages/CreatePost";
 import ProfilePage from "./Pages/Profile";
 import Sidebar from "./Components/Home/Sidebar";
 import RightSidebar from "./Components/Home/RightSidebar";
+import CompleteProfile from "./Pages/CompleteYourProfile";
+import { useFirebase } from "./Contexts/FirebaseContext";
+import Loading from "./Components/Loading";
 
 export const MainLayout = () => {
     return (
-        <div className="bg-gray-100 min-h-screen">
+        <div className="bg-gray-100 min-h-screen relative">
             <Navbar />
             <Outlet />
         </div>
@@ -22,6 +24,12 @@ export const MainLayout = () => {
 };
 
 export const HomeLayout = () => {
+    const { loading } = useFirebase();
+
+    if (loading) {
+        return <Loading />;
+    }
+
     return (
         <div className="flex mt-4 w-full px-4">
             <Sidebar />
@@ -29,6 +37,22 @@ export const HomeLayout = () => {
             <RightSidebar />
         </div>
     );
+};
+
+const Protected = ({ children }) => {
+    const { user, loading } = useFirebase();
+
+    // Show loading spinner until Firebase finishes checking
+    if (loading) {
+        return <Loading />;
+    }
+
+    // Once loading is done, decide whether to show page or redirect
+    if (!user) {
+        return <Navigate to="/login" replace />;
+    }
+
+    return children;
 };
 
 const Router = createBrowserRouter([
@@ -40,13 +64,56 @@ const Router = createBrowserRouter([
                 path: "/",
                 element: <HomeLayout />,
                 children: [
-                    { path: "/", element: <Home /> },
-                    { path: "/post/:id", element: <SinglePost /> },
-                    { path: "/post/create", element: <CreatePost /> },
+                    {
+                        path: "/",
+                        element: (
+                            <Protected>
+                                <Home />
+                            </Protected>
+                        ),
+                    },
+                    {
+                        path: "/complete-your-profile",
+                        element: (
+                            <Protected>
+                                <CompleteProfile />,
+                            </Protected>
+                        ),
+                    },
+                    {
+                        path: "/post/:id",
+                        element: (
+                            <Protected>
+                                <SinglePost />
+                            </Protected>
+                        ),
+                    },
+                    {
+                        path: "/post/create",
+                        element: (
+                            <Protected>
+                                <CreatePost />
+                            </Protected>
+                        ),
+                    },
                 ],
             },
-            { path: "/profile", element: <ProfilePage /> },
-            { path: "/sides-info", element: <SidesInfo /> },
+            {
+                path: "/profile",
+                element: (
+                    <Protected>
+                        <ProfilePage />
+                    </Protected>
+                ),
+            },
+            {
+                path: "/sides-info",
+                element: (
+                    <Protected>
+                        <SidesInfo />
+                    </Protected>
+                ),
+            },
             { path: "*", element: <NotFound /> },
         ],
     },

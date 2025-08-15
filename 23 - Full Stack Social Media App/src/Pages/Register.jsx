@@ -1,27 +1,45 @@
-// src/components/RegisterForm.jsx
-import React, { useState } from "react";
+import { useState } from "react";
+import { FaExclamationCircle, FaGoogle, FaSpinner } from "react-icons/fa";
+import { useFirebase } from "../Contexts/FirebaseContext";
+import { useNavigate } from "react-router";
 
 const RegisterForm = () => {
-    const [formData, setFormData] = useState({
-        fullName: "",
-        email: "",
-        password: "",
-        confirmPassword: "",
-        agree: false,
-    });
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
+    const [Loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
+    const navigate = useNavigate();
 
-    const handleChange = (e) => {
-        const { name, value, type, checked } = e.target;
-        setFormData({
-            ...formData,
-            [name]: type === "checkbox" ? checked : value,
-        });
-    };
-
-    const handleSubmit = (e) => {
+    const firebase = useFirebase();
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(formData);
-        // Add your Firebase register logic here
+
+        if (!email || !password || !confirmPassword) {
+            return setError("Please fill all the fields!");
+        }
+
+        if (password.length < 8) {
+            return setError("Password must be atleast 8 characters!");
+        }
+
+        if (password !== confirmPassword) {
+            return setError("Password must match with confirm password!");
+        }
+
+        setLoading(true);
+        firebase
+            .signupUserWithEmailAndPassword(email, password)
+            .then((response) => {
+                setError("");
+                if (response.user) {
+                    navigate("/complete-your-profile");
+                }
+            })
+            .catch((error) =>
+                setError(error.code.split("/")[1].split("-").join(" "))
+            )
+            .finally(() => setLoading(false));
     };
 
     return (
@@ -37,99 +55,82 @@ const RegisterForm = () => {
                     </a>
                 </p>
                 <form onSubmit={handleSubmit} className="space-y-4">
-                    {/* Full Name */}
-                    <div>
-                        <label className="block text-sm font-semibold mb-1">
-                            Full Name <span className="text-red-500">*</span>
-                        </label>
-                        <input
-                            type="text"
-                            name="fullName"
-                            value={formData.fullName}
-                            onChange={handleChange}
-                            placeholder="Full Name"
-                            className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 outline-none"
-                            required
-                        />
-                    </div>
-
-                    {/* Email */}
-                    <div>
+                    <div className="flex flex-col gap-2">
                         <label className="block text-sm font-semibold mb-1">
                             Email <span className="text-red-500">*</span>
                         </label>
                         <input
                             type="email"
                             name="email"
-                            value={formData.email}
-                            onChange={handleChange}
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
                             placeholder="Email"
                             className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 outline-none"
                             required
                         />
                     </div>
 
-                    {/* Password */}
-                    <div>
+                    <div className="flex flex-col gap-2">
                         <label className="block text-sm font-semibold mb-1">
                             Password <span className="text-red-500">*</span>
                         </label>
                         <input
                             type="password"
                             name="password"
-                            value={formData.password}
-                            onChange={handleChange}
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
                             placeholder="Password"
                             className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 outline-none"
                             required
                         />
                     </div>
 
-                    {/* Confirm Password */}
-                    <div>
+                    <div className="flex flex-col gap-2">
                         <label className="block text-sm font-semibold mb-1">
-                            Password Confirmation{" "}
+                            Confirm Password{" "}
                             <span className="text-red-500">*</span>
                         </label>
                         <input
                             type="password"
                             name="confirmPassword"
-                            value={formData.confirmPassword}
-                            onChange={handleChange}
+                            value={confirmPassword}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
                             placeholder="Password Confirmation"
                             className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 outline-none"
                             required
                         />
                     </div>
-
-                    {/* Terms */}
-                    <div className="flex items-center space-x-2">
-                        <input
-                            type="checkbox"
-                            name="agree"
-                            checked={formData.agree}
-                            onChange={handleChange}
-                            className="w-4 h-4"
-                            required
-                        />
-                        <label className="text-sm">
-                            I agree to the{" "}
-                            <a
-                                href="#"
-                                className="text-blue-600 hover:underline"
-                            >
-                                Terms & Conditions
-                            </a>
-                        </label>
-                    </div>
-
-                    {/* Submit */}
+                    {error && (
+                        <div className="flex items-center gap-2 text-red-500">
+                            <FaExclamationCircle />
+                            <span>{error}</span>
+                        </div>
+                    )}
                     <button
                         type="submit"
-                        className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition font-semibold"
+                        className="w-full h-max bg-blue-600 text-white py-2 flex items-center justify-center rounded-lg hover:bg-blue-700 transition font-semibold"
                     >
-                        Register
+                        {Loading ? (
+                            <FaSpinner className="animate-spin" />
+                        ) : (
+                            "Register"
+                        )}
                     </button>
+
+                    <p className="font-semibold text-sm text-black/80">
+                        Other Methods
+                    </p>
+                    <div>
+                        <div
+                            onClick={firebase.loginWithGoogle}
+                            className="group relative p-2 border border-gray-300 rounded-lg overflow-hidden cursor-pointer"
+                        >
+                            <p className="relative font-bold z-10 group-hover:text-white flex items-center justify-center gap-2 transition-colors duration-500">
+                                Continue with <FaGoogle />
+                            </p>
+                            <div className="absolute z-0 w-[30rem] h-[30rem] top-full left-[-15%] bg-blue-600 rounded-full group-hover:top-[-300%] transition-all duration-500"></div>
+                        </div>
+                    </div>
                 </form>
             </div>
         </div>

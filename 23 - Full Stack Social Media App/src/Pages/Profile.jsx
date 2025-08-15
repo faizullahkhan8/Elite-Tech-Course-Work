@@ -1,20 +1,19 @@
 import { Link } from "react-router-dom";
+import { useFirebase } from "../Contexts/FirebaseContext";
+import { useEffect, useState } from "react";
+import { FaPencil } from "react-icons/fa6";
 
 export default function ProfilePage() {
-    const user = {
-        name: "Faiz Ullah Khan",
-        profilePic: "/assets/profile.jpg",
-        coverPic: "/assets/cover.jpg",
-        bio: "Computer Science Student | Tech Enthusiast | Building EMedicine Pakistan",
-        friends: [
-            "/assets/f1.jpg",
-            "/assets/f2.jpg",
-            "/assets/f3.jpg",
-            "/assets/f4.jpg",
-            "/assets/f5.jpg",
-            "/assets/f6.jpg",
-        ],
-    };
+    const { getUserInfo } = useFirebase();
+    const [user, setUser] = useState({});
+
+    useEffect(() => {
+        const fetchUser = async () => {
+            const userInfo = await getUserInfo();
+            setUser(userInfo);
+        };
+        fetchUser();
+    }, [getUserInfo, setUser]);
 
     return (
         <div className="min-h-screen bg-gray-50">
@@ -25,12 +24,26 @@ export default function ProfilePage() {
                     alt="Cover"
                     className="w-full h-full object-cover"
                 />
-                <div className="absolute -bottom-16 max-sm:-bottom-[105px] left-6 w-full h-max flex items-end gap-4 max-sm:flex-col max-sm:items-start">
-                    <img
-                        src={user.profilePic}
-                        alt={user.name}
-                        className="w-36 h-36 rounded-full border-4 border-white object-cover"
-                    />
+
+                <div className="absolute -bottom-16 max-sm:-bottom-[105px] px-6 w-full h-max flex items-end gap-4 max-sm:flex-col max-sm:items-start">
+                    <div className="relative">
+                        <img
+                            src={user.profilePic}
+                            alt={user.name}
+                            className="w-36 h-36 rounded-full border-4 border-white object-cover"
+                        />
+                        <label
+                            htmlFor="profileImage"
+                            className="absolute right-4 bottom-0 w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center"
+                        >
+                            <FaPencil />
+                        </label>
+                        <input
+                            type="file"
+                            className="hidden"
+                            id="profileImage"
+                        />
+                    </div>
                     <div className="pb-4">
                         <h1 className="text-2xl font-bold text-gray-900">
                             {user.name}
@@ -53,9 +66,12 @@ export default function ProfilePage() {
                         </Link>
                     ))}
                 </div>
-                <button className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
+                <Link
+                    to={"/complete-your-profile"}
+                    className="bg-blue-600 text-center text-white px-4 py-2 rounded-md hover:bg-blue-700"
+                >
                     Edit Profile
-                </button>
+                </Link>
             </div>
 
             {/* Main Content */}
@@ -72,13 +88,16 @@ export default function ProfilePage() {
                     <div className="bg-white p-4 rounded-lg shadow-sm">
                         <h2 className="text-lg font-semibold mb-2">Friends</h2>
                         <div className="grid grid-cols-3 gap-2">
-                            {user.friends.map((f, idx) => (
-                                <img
-                                    key={idx}
-                                    src={f}
-                                    alt={`Friend ${idx}`}
-                                    className="w-full h-20 object-cover rounded-lg"
-                                />
+                            {user.friends?.map((f, idx) => (
+                                // <img
+                                //     key={idx}
+                                //     src={f}
+                                //     alt={`Friend ${idx}`}
+                                //     className="w-full h-20 object-cover rounded-lg"
+                                // />
+                                <p key={idx} className="text-sm">
+                                    {f}
+                                </p>
                             ))}
                         </div>
                         <Link

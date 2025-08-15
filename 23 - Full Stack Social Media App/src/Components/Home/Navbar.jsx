@@ -1,24 +1,13 @@
-import {
-    FaSearch,
-    FaFacebookMessenger,
-    FaBell,
-    FaBars,
-    FaArrowRight,
-    FaArrowLeft,
-} from "react-icons/fa";
+import { FaSearch, FaBell, FaBars } from "react-icons/fa";
 import { Link } from "react-router";
 
 export default function Navbar() {
-    // if the screen width is less than 40rem
-    const isMobile = window.innerWidth < 768;
-
     return (
-        <div className="flex items-center justify-between bg-white px-4 py-2 shadow sticky top-0 z-50">
+        <div className="flex items-center justify-between gap-2 bg-white px-4 py-2 shadow sticky top-0 z-50">
             <Link
                 to={"/"}
-                className="text-xl font-bold flex items-center gap-2"
+                className="text-xl max-sm:text-sm font-bold flex items-center gap-2"
             >
-                <FaArrowLeft />
                 Lets Connekt
             </Link>
 
@@ -41,10 +30,7 @@ export default function Navbar() {
                     <FaBars />
                 </Link>
 
-                <Link
-                    to={isMobile ? "/sides-info" : "/profile"}
-                    className="max-sm:hidden"
-                >
+                <Link to={"/profile"} className="max-sm:hidden">
                     <img
                         src="https://i.pravatar.cc/40"
                         alt="Profile"
