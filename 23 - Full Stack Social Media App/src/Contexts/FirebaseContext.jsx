@@ -10,7 +10,16 @@ import {
     signInWithPopup,
     onAuthStateChanged,
 } from "firebase/auth";
-import { getFirestore, setDoc, doc, getDoc } from "firebase/firestore";
+import {
+    getFirestore,
+    setDoc,
+    doc,
+    getDoc,
+    getDocs,
+    collection,
+    addDoc,
+    serverTimestamp,
+} from "firebase/firestore";
 import { Navigate } from "react-router-dom";
 
 const firebaseConfig = {
@@ -87,6 +96,57 @@ export const FirebaseContextProvider = ({ children }) => {
         }
     };
 
+    const createPost = async ({ text, imageUrl }) => {
+        try {
+            if (!user) throw new Error("User not logged in");
+
+            // reference to the user document
+            const userRef = doc(db, "users", user.uid);
+
+            const postData = {
+                creatorRef: userRef,
+                text: text || "",
+                imageUrl: imageUrl || "",
+                likes: [],
+                comments: [],
+                createdAt: serverTimestamp(),
+            };
+
+            const docRef = await addDoc(collection(db, "posts"), postData);
+            return docRef.id;
+        } catch (error) {
+            console.error("Error creating post: ", error);
+            throw error;
+        }
+    };
+
+    // 📥 Fetch posts with creator info populated
+    const fetchPosts = async () => {
+        const postsSnap = await getDocs(collection(db, "posts"));
+        const posts = [];
+
+        for (let postDoc of postsSnap.docs) {
+            const postData = postDoc.data();
+
+            // fetch creator info
+            let creator = null;
+            if (postData.creatorRef) {
+                const creatorSnap = await getDoc(postData.creatorRef);
+                if (creatorSnap.exists()) {
+                    creator = { id: creatorSnap.id, ...creatorSnap.data() };
+                }
+            }
+
+            posts.push({
+                id: postDoc.id,
+                ...postData,
+                creator,
+            });
+        }
+
+        return posts;
+    };
+
     // Set global state for user
     useEffect(() => {
         const unsub = onAuthStateChanged(firebaseAuth, (authUser) => {
@@ -108,6 +168,8 @@ export const FirebaseContextProvider = ({ children }) => {
                 signupUserWithEmailAndPassword,
                 loginUserWithEmailAndPassword,
                 loginWithGoogle,
+                createPost,
+                fetchPosts,
                 logoutUser,
                 getUserInfo,
                 firebaseAuth,

@@ -8,19 +8,19 @@ export default function ProfilePage() {
     const [user, setUser] = useState({});
 
     useEffect(() => {
-        const fetchUser = async () => {
+        const fetches = async () => {
             const userInfo = await getUserInfo();
             setUser(userInfo);
         };
-        fetchUser();
-    }, [getUserInfo, setUser]);
+        fetches();
+    }, [getUserInfo]);
 
     return (
         <div className="min-h-screen bg-gray-50">
             {/* Cover Photo Section */}
             <div className="relative w-full h-52 bg-gray-200">
                 <img
-                    src={user.coverPic}
+                    src={user.coverUrl}
                     alt="Cover"
                     className="w-full h-full object-cover"
                 />
@@ -28,7 +28,7 @@ export default function ProfilePage() {
                 <div className="absolute -bottom-16 max-sm:-bottom-[105px] px-6 w-full h-max flex items-end gap-4 max-sm:flex-col max-sm:items-start">
                     <div className="relative">
                         <img
-                            src={user.profilePic}
+                            src={user?.imageUrl}
                             alt={user.name}
                             className="w-36 h-36 rounded-full border-4 border-white object-cover"
                         />
@@ -45,7 +45,7 @@ export default function ProfilePage() {
                         />
                     </div>
                     <div className="pb-4">
-                        <h1 className="text-2xl font-bold text-gray-900">
+                        <h1 className="text-4xl max-sm: font-bold text-blue-600 ">
                             {user.name}
                         </h1>
                         <p className="text-gray-600">{user.bio}</p>
