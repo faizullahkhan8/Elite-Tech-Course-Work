@@ -1,9 +1,4 @@
-import {
-    createBrowserRouter,
-    Navigate,
-    Outlet,
-    useLocation,
-} from "react-router-dom";
+import { createBrowserRouter, Navigate, Outlet } from "react-router-dom";
 import Navbar from "./Components/Home/Navbar";
 import Home from "./Components/Home/Feed";
 import Login from "./Pages/Login";
@@ -46,8 +41,7 @@ export const HomeLayout = () => {
 };
 
 const Protected = ({ children }) => {
-    const { user, userInfo, loading } = useFirebase();
-    const location = useLocation();
+    const { user, loading } = useFirebase();
 
     if (loading) {
         return <Loading />;
@@ -55,10 +49,6 @@ const Protected = ({ children }) => {
 
     if (!user) {
         return <Navigate to="/login" replace />;
-    }
-
-    if (!userInfo && location.pathname !== "/complete-your-profile") {
-        return <Navigate to="/complete-your-profile" replace />;
     }
 
     return children;
