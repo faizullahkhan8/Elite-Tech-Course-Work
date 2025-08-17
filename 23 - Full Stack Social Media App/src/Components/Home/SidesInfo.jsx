@@ -1,21 +1,24 @@
+// src/components/Sidebar/SideInfo.jsx
 import { FaArrowLeft, FaSignOutAlt, FaThumbsUp, FaUsers } from "react-icons/fa";
-import { Link } from "react-router";
-import { useFirebase } from "../../Contexts/FirebaseContext";
 import { FaGear } from "react-icons/fa6";
+import { Link, useNavigate } from "react-router";
+import { useFirebase } from "../../Contexts/FirebaseContext";
 
 export default function SideInfo() {
-    const { logoutUser } = useFirebase();
-    const user = {
-        name: "Faiz Ullah Khan",
-        profilePic: "/assets/profile.jpg",
-    };
+    const { user, userInfo, logoutUser } = useFirebase();
+    const navigate = useNavigate();
 
-    // Merged Left + Right sidebar references
+    // Sidebar Links
     const links = [
         { label: "Friends", path: "/friends", icon: <FaUsers /> },
-        { label: "Likes", path: "/groups", icon: <FaThumbsUp /> },
+        { label: "Likes", path: "/likes", icon: <FaThumbsUp /> },
         { label: "Settings", path: "/settings", icon: <FaGear /> },
     ];
+
+    const handleLogout = async () => {
+        await logoutUser();
+        navigate("/login"); // redirect after logout
+    };
 
     return (
         <div className="min-h-screen bg-gray-50">
@@ -25,16 +28,16 @@ export default function SideInfo() {
                     <FaArrowLeft />
                 </Link>
                 <img
-                    src={user.profilePic}
-                    alt={user.name}
+                    src={userInfo?.profilePic || "/assets/default-profile.png"}
+                    alt={userInfo?.name || user?.email}
                     className="w-14 h-14 rounded-full border object-cover"
                 />
                 <div>
                     <h1 className="text-lg font-semibold text-gray-800">
-                        {user.name}
+                        {userInfo?.name || user?.email || "Guest User"}
                     </h1>
                     <Link
-                        to="/profile"
+                        to={`/profile/${user?.uid}`}
                         className="text-sm text-blue-600 hover:underline"
                     >
                         View Profile
@@ -42,24 +45,29 @@ export default function SideInfo() {
                 </div>
             </div>
 
-            {/* List */}
+            {/* Sidebar Links */}
             <div className="mt-3 space-y-2 px-3">
                 {links.map((item, idx) => (
                     <Link
                         key={idx}
                         to={item.path}
-                        className="flex items-center justify-start gap-4 bg-white rounded-lg shadow-sm p-3 text-gray-700 font-medium hover:bg-gray-100 transition"
+                        className="flex items-center gap-4 bg-white rounded-lg shadow-sm p-3 text-gray-700 font-medium hover:bg-gray-100 transition"
                     >
                         {item.icon}
                         {item.label}
                     </Link>
                 ))}
             </div>
-            <div className="mt-3 space-y-2 px-3" onClick={logoutUser}>
-                <div className="flex items-center justify-start gap-4 bg-white rounded-lg shadow-sm p-3 text-gray-700 font-medium hover:bg-gray-100 transition">
+
+            {/* Logout */}
+            <div className="mt-3 space-y-2 px-3">
+                <button
+                    onClick={handleLogout}
+                    className="w-full flex items-center gap-4 bg-white rounded-lg shadow-sm p-3 text-gray-700 font-medium hover:bg-gray-100 transition"
+                >
                     <FaSignOutAlt className="rotate-180" />
                     <span className="text-red-500">Logout</span>
-                </div>
+                </button>
             </div>
         </div>
     );
