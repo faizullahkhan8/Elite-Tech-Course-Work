@@ -1,4 +1,3 @@
-// src/pages/CompleteProfile.jsx
 import { useEffect, useState } from "react";
 import {
     FaUser,
@@ -6,12 +5,18 @@ import {
     FaMapMarkerAlt,
     FaGlobe,
     FaPhone,
+    FaHome,
+    FaBriefcase,
+    FaHeart,
+    FaBook,
 } from "react-icons/fa";
 import { useFirebase } from "../Contexts/FirebaseContext";
 import { useNavigate } from "react-router";
+import UserAvatar from "../Assets/Images/UserAvatar.jpg";
+import CoverPlaceholder from "../Assets/Images/CoverPlaceholder.jpg";
 
 export default function CompleteProfile() {
-    const { getUserInfo, createUser } = useFirebase();
+    const { createUser, userInfo, user } = useFirebase();
     const navigate = useNavigate();
 
     const [previewProfile, setPreviewProfile] = useState(null);
@@ -19,7 +24,7 @@ export default function CompleteProfile() {
     const [profileFile, setProfileFile] = useState(null);
     const [coverFile, setCoverFile] = useState(null);
 
-    const [user, setUser] = useState({
+    const [userData, setUserData] = useState({
         name: "",
         gender: "male",
         imageUrl: "",
@@ -36,15 +41,16 @@ export default function CompleteProfile() {
     });
 
     useEffect(() => {
-        const fetchUser = async () => {
-            const userInfo = await getUserInfo();
-            if (userInfo) setUser(userInfo);
-        };
-        fetchUser();
-    }, [getUserInfo]);
+        if (userInfo) {
+            setUserData((prev) => ({
+                ...prev,
+                ...userInfo,
+            }));
+        }
+    }, [userInfo]);
 
     const handleChange = (e) => {
-        setUser({ ...user, [e.target.name]: e.target.value });
+        setUserData({ ...userData, [e.target.name]: e.target.value });
     };
 
     const handleImageSelect = (e, type) => {
@@ -63,9 +69,8 @@ export default function CompleteProfile() {
     const uploadToImageKit = async (file, fileName, folder, oldUrl) => {
         if (!file) return oldUrl;
 
-        // delete old one
         if (oldUrl) {
-            const fileId = oldUrl.split("/").pop().split("?")[0]; // extract id
+            const fileId = oldUrl.split("/").pop().split("?")[0];
             await fetch(`https://api.imagekit.io/v1/files/${fileId}`, {
                 method: "DELETE",
                 headers: {
@@ -74,11 +79,10 @@ export default function CompleteProfile() {
                         btoa(import.meta.env.VITE_IMAGEKIT_PRIVATE_KEY + ":"),
                 },
             }).catch((error) => {
-                console.log(error);
+                console.log("Error deleting old image:", error);
             });
         }
 
-        // upload new one
         const formData = new FormData();
         formData.append("file", file);
         formData.append("fileName", fileName);
@@ -103,30 +107,33 @@ export default function CompleteProfile() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (!user) return;
 
-        let profileUrl = user.imageUrl;
-        let coverUrl = user.coverUrl;
+        let profileUrl = userData.imageUrl;
+        let coverUrl = userData.coverUrl;
 
         if (profileFile) {
             profileUrl = await uploadToImageKit(
                 profileFile,
-                `${user.uid || "guest"}_profile.jpg`,
+                `${user.uid}_profile.jpg`,
                 "/profile_pics/",
-                user.imageUrl
+                userData.imageUrl
             );
         }
 
         if (coverFile) {
             coverUrl = await uploadToImageKit(
                 coverFile,
-                `${user.uid || "guest"}_cover.jpg`,
+                `${user.uid}_cover.jpg`,
                 "/cover_pics/",
-                user.coverUrl
+                userData.coverUrl
             );
         }
 
         const updatedUser = {
-            ...user,
+            ...userData,
+            uid: user.uid,
+            email: user.email,
             imageUrl: profileUrl,
             coverUrl: coverUrl,
         };
@@ -142,239 +149,194 @@ export default function CompleteProfile() {
             </h1>
 
             <form onSubmit={handleSubmit} className="space-y-4">
-                {/* Profile Picture */}
                 <div>
-                    <label className="block text-sm font-medium mb-1">
+                    <label className="text-sm font-medium mb-1">
                         Profile Picture
                     </label>
-                    {previewProfile ? (
+                    {previewProfile || userData.imageUrl ? (
                         <img
-                            src={previewProfile}
-                            alt="preview profile"
-                            className="w-32 h-32 rounded-full object-cover mb-2"
-                        />
-                    ) : user.imageUrl ? (
-                        <img
-                            src={user.imageUrl}
+                            src={previewProfile || userData.imageUrl}
                             alt="profile"
                             className="w-32 h-32 rounded-full object-cover mb-2"
                         />
-                    ) : null}
+                    ) : (
+                        <img
+                            src={UserAvatar}
+                            alt="default profile"
+                            className="w-32 h-32 rounded-full object-cover mb-2"
+                        />
+                    )}
                     <input
                         type="file"
                         accept="image/*"
                         className="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 cursor-pointer"
-                        required
+                        required={!userData.imageUrl}
                         onChange={(e) => handleImageSelect(e, "profile")}
                     />
                 </div>
 
-                {/* Cover Picture */}
                 <div>
-                    <label className="block text-sm font-medium mb-1">
+                    <label className="text-sm font-medium mb-1">
                         Cover Photo
                     </label>
-                    {previewCover ? (
+                    {previewCover || userData.coverUrl ? (
                         <img
-                            src={previewCover}
-                            alt="preview cover"
-                            className="w-full h-40 object-cover mb-2 rounded-lg"
-                        />
-                    ) : user.coverUrl ? (
-                        <img
-                            src={user.coverUrl}
+                            src={previewCover || userData.coverUrl}
                             alt="cover"
                             className="w-full h-40 object-cover mb-2 rounded-lg"
                         />
-                    ) : null}
+                    ) : (
+                        <img
+                            src={CoverPlaceholder}
+                            alt="default cover"
+                            className="w-full h-40 object-cover mb-2 rounded-lg"
+                        />
+                    )}
                     <input
                         type="file"
                         accept="image/*"
-                        required
+                        required={!userData.coverUrl}
                         className="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 cursor-pointer"
                         onChange={(e) => handleImageSelect(e, "cover")}
                     />
                 </div>
 
-                {/* Full Name */}
                 <div>
-                    <label className="block text-sm font-medium mb-1">
-                        Full Name
-                    </label>
+                    <label className="text-sm font-medium mb-1">Name</label>
                     <input
                         type="text"
                         name="name"
-                        value={user.name}
-                        required
+                        value={userData.name}
                         onChange={handleChange}
-                        placeholder="Enter your full name"
-                        className="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700"
+                        className="w-full border rounded-lg px-3 py-2 dark:bg-gray-800 dark:border-gray-700"
+                        required
                     />
                 </div>
 
-                {/* Gender */}
-                <div className="flex flex-col gap-1">
-                    <label>Gender</label>
-                    <div className="flex items-center gap-4">
-                        <button
-                            type="button"
-                            onClick={() => setUser({ ...user, gender: "male" })}
-                            className={`${
-                                user.gender === "male"
-                                    ? "bg-blue-500 hover:bg-blue-600 text-white"
-                                    : "text-black"
-                            } px-5 py-2 rounded-lg font-semibold transition border border-gray-700`}
-                        >
-                            Male
-                        </button>
-
-                        <button
-                            type="button"
-                            onClick={() =>
-                                setUser({ ...user, gender: "female" })
-                            }
-                            className={`${
-                                user.gender === "female"
-                                    ? "bg-blue-500 hover:bg-blue-600 text-white"
-                                    : "text-black"
-                            } px-5 py-2 rounded-lg font-semibold transition border border-gray-700`}
-                        >
-                            Female
-                        </button>
-                    </div>
-                </div>
-
-                {/* Bio */}
                 <div>
-                    <label className="block text-sm font-medium mb-1">
-                        Bio
-                    </label>
+                    <label className="text-sm font-medium mb-1">Bio</label>
                     <textarea
                         name="bio"
-                        value={user.bio}
+                        value={userData.bio}
                         onChange={handleChange}
-                        required
-                        placeholder="Write something about yourself..."
-                        rows="3"
-                        className="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700"
-                    ></textarea>
+                        className="w-full border rounded-lg px-3 py-2 dark:bg-gray-800 dark:border-gray-700"
+                    />
                 </div>
 
-                {/* Date of Birth */}
                 <div>
-                    <label className=" text-sm font-medium mb-1 flex items-center gap-1">
+                    <label className="text-sm font-medium mb-1">Gender</label>
+                    <select
+                        name="gender"
+                        value={userData.gender}
+                        onChange={handleChange}
+                        className="w-full border rounded-lg px-3 py-2 dark:bg-gray-800 dark:border-gray-700"
+                    >
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label className="text-sm font-medium mb-1 flex items-center gap-2">
                         <FaBirthdayCake /> Date of Birth
                     </label>
                     <input
                         type="date"
                         name="dob"
-                        value={user.dob}
+                        value={userData.dob}
                         onChange={handleChange}
-                        required
-                        className="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700"
+                        className="w-full border rounded-lg px-3 py-2 dark:bg-gray-800 dark:border-gray-700"
                     />
                 </div>
 
-                {/* Other fields */}
-                <div className="grid sm:grid-cols-2 gap-4">
-                    <div>
-                        <label className="block text-sm font-medium mb-1">
-                            City
-                        </label>
-                        <input
-                            type="text"
-                            name="city"
-                            value={user.city}
-                            onChange={handleChange}
-                            placeholder="Enter your city"
-                            required
-                            className="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700"
-                        />
-                    </div>
-                    <div>
-                        <label className="block text-sm font-medium mb-1">
-                            Country
-                        </label>
-                        <input
-                            type="text"
-                            name="country"
-                            value={user.country}
-                            onChange={handleChange}
-                            required
-                            placeholder="Enter your country"
-                            className="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700"
-                        />
-                    </div>
-                </div>
-
                 <div>
-                    <label className=" text-sm font-medium mb-1 flex items-center gap-1">
-                        <FaMapMarkerAlt /> Address
+                    <label className="text-sm font-medium mb-1 flex items-center gap-2">
+                        <FaHome /> Address
                     </label>
                     <input
                         type="text"
                         name="address"
-                        value={user.address}
+                        placeholder="Street address"
+                        value={userData.address}
                         onChange={handleChange}
-                        required
-                        placeholder="Enter your address"
-                        className="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700"
+                        className="w-full border rounded-lg px-3 py-2 dark:bg-gray-800 dark:border-gray-700"
                     />
                 </div>
 
                 <div>
-                    <label className=" text-sm font-medium mb-1 flex items-center gap-1">
-                        <FaPhone /> Phone Number
+                    <label className="text-sm font-medium mb-1 flex items-center gap-2">
+                        <FaMapMarkerAlt /> City
                     </label>
                     <input
-                        type="tel"
-                        name="phone"
-                        value={user.phone}
+                        type="text"
+                        name="city"
+                        value={userData.city}
                         onChange={handleChange}
-                        required
-                        placeholder="Enter your phone number"
-                        className="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700"
+                        className="w-full border rounded-lg px-3 py-2 dark:bg-gray-800 dark:border-gray-700"
                     />
                 </div>
 
                 <div>
-                    <label className="block text-sm font-medium mb-1">
-                        Occupation
+                    <label className="text-sm font-medium mb-1 flex items-center gap-2">
+                        <FaGlobe /> Country
+                    </label>
+                    <input
+                        type="text"
+                        name="country"
+                        value={userData.country}
+                        onChange={handleChange}
+                        className="w-full border rounded-lg px-3 py-2 dark:bg-gray-800 dark:border-gray-700"
+                    />
+                </div>
+
+                <div>
+                    <label className="text-sm font-medium mb-1 flex items-center gap-2">
+                        <FaPhone /> Phone
+                    </label>
+                    <input
+                        type="text"
+                        name="phone"
+                        value={userData.phone}
+                        onChange={handleChange}
+                        className="w-full border rounded-lg px-3 py-2 dark:bg-gray-800 dark:border-gray-700"
+                    />
+                </div>
+
+                <div>
+                    <label className="text-sm font-medium mb-1 flex items-center gap-2">
+                        <FaBriefcase /> Occupation
                     </label>
                     <input
                         type="text"
                         name="occupation"
-                        value={user.occupation}
+                        value={userData.occupation}
                         onChange={handleChange}
-                        required
-                        placeholder="Your job/profession"
-                        className="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700"
+                        className="w-full border rounded-lg px-3 py-2 dark:bg-gray-800 dark:border-gray-700"
                     />
                 </div>
 
                 <div>
-                    <label className="block text-sm font-medium mb-1">
-                        Relationship Status
+                    <label className="text-sm font-medium mb-1 flex items-center gap-2">
+                        <FaHeart /> Relationship
                     </label>
                     <select
                         name="relationship"
-                        required
-                        value={user.relationship}
+                        value={userData.relationship}
                         onChange={handleChange}
-                        className="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700"
+                        className="w-full border rounded-lg px-3 py-2 dark:bg-gray-800 dark:border-gray-700"
                     >
-                        <option value="">Select status</option>
-                        <option value="Single">Single</option>
-                        <option value="In a Relationship">
+                        <option value="">Select</option>
+                        <option value="single">Single</option>
+                        <option value="in_a_relationship">
                             In a Relationship
                         </option>
-                        <option value="Married">Married</option>
-                        <option value="It's Complicated">
-                            It's Complicated
-                        </option>
+                        <option value="married">Married</option>
+                        <option value="complicated">Complicated</option>
                     </select>
                 </div>
 
+                {/* Submit */}
                 <div className="flex justify-end">
                     <button
                         type="submit"

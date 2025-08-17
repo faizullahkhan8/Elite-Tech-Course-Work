@@ -22,6 +22,8 @@ import {
     updateDoc,
     arrayUnion,
     arrayRemove,
+    where,
+    query,
 } from "firebase/firestore";
 
 const firebaseConfig = {
@@ -47,9 +49,6 @@ export const FirebaseContextProvider = ({ children }) => {
     const [userInfo, setUserInfo] = useState(null); // Firestore profile
     const [loading, setLoading] = useState(true);
 
-    // =====================
-    // 🔑 AUTH FUNCTIONS
-    // =====================
     const signupUserWithEmailAndPassword = (email, password) =>
         createUserWithEmailAndPassword(firebaseAuth, email, password);
 
@@ -68,9 +67,6 @@ export const FirebaseContextProvider = ({ children }) => {
 
     const logoutUser = () => signOut(firebaseAuth);
 
-    // =====================
-    // 👤 USER FUNCTIONS
-    // =====================
     const createUser = async (data) => {
         try {
             await setDoc(doc(db, "users", user.uid), data);
@@ -93,9 +89,94 @@ export const FirebaseContextProvider = ({ children }) => {
         }
     };
 
-    // =====================
-    // 📝 POSTS
-    // =====================
+    const allUsers = async () => {
+        try {
+            const usersCollection = collection(db, "users");
+            const usersSnapshot = await getDocs(usersCollection);
+            const usersList = usersSnapshot.docs.map((doc) => ({
+                id: doc.id,
+                ...doc.data(),
+            }));
+            return usersList;
+        } catch (error) {
+            console.log("get all users error:", error.message);
+            return [];
+        }
+    };
+
+    const addFriend = async (friendId) => {
+        try {
+            if (!user) throw new Error("User not logged in");
+
+            const userRef = doc(db, "users", user.uid);
+            const friendRef = doc(db, "users", friendId);
+
+            await updateDoc(userRef, {
+                friends: arrayUnion(friendRef),
+            });
+        } catch (error) {
+            console.error("Error adding friend: ", error);
+            throw error;
+        }
+    };
+
+    const removeFriend = async (id) => {
+        try {
+            if (!user) throw new Error("User not logged in");
+
+            const userRef = doc(db, "users", user.uid);
+            const friendRef = doc(db, "users", id);
+
+            await updateDoc(userRef, {
+                friends: arrayRemove(friendRef),
+            });
+        } catch (error) {
+            console.error("Error removing friend: ", error);
+            throw error;
+        }
+    };
+
+    const searchUsers = async (searchQuery) => {
+        try {
+            const usersCollection = collection(db, "users");
+            const snapshot = await getDocs(usersCollection);
+
+            // normalize query
+            const lowerCaseQuery = searchQuery.toLowerCase();
+
+            const results = snapshot.docs
+                .map((doc) => ({ id: doc.id, ...doc.data() }))
+                .filter(
+                    (user) =>
+                        user.name &&
+                        user.name.toLowerCase().includes(lowerCaseQuery)
+                );
+
+            return results;
+        } catch (error) {
+            console.error("Error searching users:", error);
+            return [];
+        }
+    };
+
+    const getUserFriends = async (uid) => {
+        try {
+            const userRef = doc(db, "users", uid);
+            const userSnap = await getDoc(userRef);
+            if (!userSnap.exists()) throw new Error("User not found");
+
+            const userData = userSnap.data();
+            const friends = userData.friends || [];
+            const friendDocs = await Promise.all(
+                friends.map((friendRef) => getDoc(friendRef))
+            );
+            return friendDocs.map((doc) => ({ id: doc.id, ...doc.data() }));
+        } catch (error) {
+            console.error("Error getting user friends: ", error);
+            return [];
+        }
+    };
+
     const createPost = async ({ text, imageUrl }) => {
         try {
             if (!user) throw new Error("User not logged in");
@@ -166,9 +247,36 @@ export const FirebaseContextProvider = ({ children }) => {
         };
     };
 
-    // =====================
-    // 💬 COMMENTS
-    // =====================
+    // fetch user posts
+    const fetchUserPosts = async (uid) => {
+        if (!uid) return [];
+
+        try {
+            // build the reference to the user document
+            const userRef = doc(db, "users", uid);
+
+            // query posts where creatorRef == that user document
+            const q = query(
+                collection(db, "posts"),
+                where("creatorRef", "==", userRef)
+            );
+
+            const snapshot = await getDocs(q);
+            let posts = snapshot.docs.map((docSnap) => ({
+                id: docSnap.id,
+                ...docSnap.data(),
+            }));
+
+            // sort by createdAt (newest first)
+            posts.sort((a, b) => b.createdAt?.seconds - a.createdAt?.seconds);
+
+            return posts;
+        } catch (error) {
+            console.error("Error fetching user posts:", error);
+            return [];
+        }
+    };
+
     const addComment = async (postId, commentText) => {
         try {
             const commentData = {
@@ -221,9 +329,6 @@ export const FirebaseContextProvider = ({ children }) => {
         }
     };
 
-    // =====================
-    // 👍 LIKES
-    // =====================
     const addLike = async (postId) => {
         try {
             if (!user) throw new Error("User not logged in");
@@ -246,9 +351,6 @@ export const FirebaseContextProvider = ({ children }) => {
         }
     };
 
-    // =====================
-    // 🔄 GLOBAL AUTH STATE
-    // =====================
     useEffect(() => {
         const unsub = onAuthStateChanged(firebaseAuth, async (authUser) => {
             setLoading(true);
@@ -266,7 +368,7 @@ export const FirebaseContextProvider = ({ children }) => {
         });
 
         return () => unsub();
-    }, []);
+    }, [setUserInfo]);
 
     return (
         <FirebaseContext.Provider
@@ -277,9 +379,15 @@ export const FirebaseContextProvider = ({ children }) => {
                 logoutUser,
                 createUser,
                 getUserInfo,
+                allUsers,
+                searchUsers,
+                addFriend,
+                removeFriend,
+                getUserFriends,
                 createPost,
                 fetchPosts,
                 fetchPostById,
+                fetchUserPosts,
                 addComment,
                 getPostComments,
                 addLike,

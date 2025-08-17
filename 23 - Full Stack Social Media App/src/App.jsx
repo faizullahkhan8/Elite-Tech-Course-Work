@@ -1,4 +1,9 @@
-import { createBrowserRouter, Navigate, Outlet } from "react-router-dom";
+import {
+    createBrowserRouter,
+    Navigate,
+    Outlet,
+    useLocation,
+} from "react-router-dom";
 import Navbar from "./Components/Home/Navbar";
 import Home from "./Components/Home/Feed";
 import Login from "./Pages/Login";
@@ -8,6 +13,7 @@ import NotFound from "./Pages/NotFound";
 import SinglePost from "./Pages/SinglePost";
 import CreatePost from "./Pages/CreatePost";
 import ProfilePage from "./Pages/Profile";
+import UserVisitorProfile from "./Pages/UserVisitorProfile";
 import Sidebar from "./Components/Home/Sidebar";
 import RightSidebar from "./Components/Home/RightSidebar";
 import CompleteProfile from "./Pages/CompleteYourProfile";
@@ -40,16 +46,19 @@ export const HomeLayout = () => {
 };
 
 const Protected = ({ children }) => {
-    const { user, loading } = useFirebase();
+    const { user, userInfo, loading } = useFirebase();
+    const location = useLocation();
 
-    // Show loading spinner until Firebase finishes checking
     if (loading) {
         return <Loading />;
     }
 
-    // Once loading is done, decide whether to show page or redirect
     if (!user) {
         return <Navigate to="/login" replace />;
+    }
+
+    if (!userInfo && location.pathname !== "/complete-your-profile") {
+        return <Navigate to="/complete-your-profile" replace />;
     }
 
     return children;
@@ -96,6 +105,14 @@ const Router = createBrowserRouter([
                             </Protected>
                         ),
                     },
+                    {
+                        path: "/profile/visitor/:id",
+                        element: (
+                            <Protected>
+                                <UserVisitorProfile />
+                            </Protected>
+                        ),
+                    },
                 ],
             },
             {
@@ -106,6 +123,7 @@ const Router = createBrowserRouter([
                     </Protected>
                 ),
             },
+
             {
                 path: "/sides-info",
                 element: (

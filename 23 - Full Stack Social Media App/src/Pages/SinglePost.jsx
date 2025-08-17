@@ -15,9 +15,7 @@ const SinglePost = () => {
         useFirebase();
     const postId = params.id;
 
-    console.log(userInfo);
-
-    // Fetch post
+    // Fetch post + comments
     useEffect(() => {
         const fetchPostData = async () => {
             const postData = await fetchPostById(postId);
@@ -36,7 +34,15 @@ const SinglePost = () => {
 
         const commentData = await addComment(postId, newComment);
 
-        setComments((prev) => [commentData, ...prev]); // Optimistic update
+        // Normalize createdAt for optimistic update
+        const normalizedComment = {
+            ...commentData,
+            createdAt: commentData.createdAt?.toDate
+                ? commentData.createdAt
+                : new Date(),
+        };
+
+        setComments((prev) => [normalizedComment, ...prev]);
         setNewComment("");
     };
 
@@ -59,7 +65,11 @@ const SinglePost = () => {
                             {post.creator?.name || "Unknown User"}
                         </h3>
                         <p className="text-sm text-gray-500">
-                            {post.createdAt?.toDate().toLocaleString() || ""}
+                            {post.createdAt?.toDate
+                                ? post.createdAt.toDate().toLocaleString()
+                                : post.createdAt
+                                ? new Date(post.createdAt).toLocaleString()
+                                : ""}
                         </p>
                     </div>
                 </div>
@@ -136,8 +146,14 @@ const SinglePost = () => {
                                     </p>
                                     <span className="text-xs text-gray-400">
                                         {comment.createdAt
-                                            ?.toDate()
-                                            .toLocaleString() || ""}
+                                            ? comment.createdAt.toDate
+                                                ? comment.createdAt
+                                                      .toDate()
+                                                      .toLocaleString()
+                                                : new Date(
+                                                      comment.createdAt
+                                                  ).toLocaleString()
+                                            : ""}
                                     </span>
                                 </div>
                             </div>

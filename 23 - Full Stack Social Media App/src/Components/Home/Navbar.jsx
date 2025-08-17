@@ -1,6 +1,7 @@
 import { FaSearch, FaBell, FaBars } from "react-icons/fa";
 import { Link } from "react-router";
 import { useFirebase } from "../../Contexts/FirebaseContext";
+import UserAvatar from "../../Assets/Images/UserAvatar.jpg";
 
 export default function Navbar() {
     const { userInfo } = useFirebase();
@@ -33,11 +34,18 @@ export default function Navbar() {
                 </Link>
 
                 <Link to={"/profile"} className="max-sm:hidden">
-                    <img
-                        src={userInfo?.imageUrl}
-                        alt="Profile"
-                        className="rounded-full w-8 h-8 object-cover"
-                    />
+                    {userInfo?.imageUrl ? (
+                        <img
+                            src={userInfo?.imageUrl}
+                            alt="Profile"
+                            className="rounded-full w-8 h-8 object-cover"
+                        />
+                    ) : (
+                        <img
+                            src={UserAvatar}
+                            className="rounded-full w-8 h-8 bg-gray-300"
+                        />
+                    )}
                 </Link>
             </div>
         </div>

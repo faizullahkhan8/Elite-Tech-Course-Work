@@ -8,8 +8,6 @@ export default function Feed() {
     const { fetchPosts } = useFirebase();
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(true);
-    // const { user } = useFirebase();
-    console.log(posts);
 
     useEffect(() => {
         const getPosts = async () => {
@@ -25,8 +23,6 @@ export default function Feed() {
 
         getPosts();
     }, [fetchPosts]);
-
-    console.log(posts);
 
     return (
         <div className="flex-1 px-6">

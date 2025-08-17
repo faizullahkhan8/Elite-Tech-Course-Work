@@ -11,7 +11,6 @@ export default function CreatePost() {
 
     const { createPost } = useFirebase();
 
-    // 📸 Preview before uploading
     const handleImageChange = (e) => {
         const file = e.target.files[0];
         if (file) {
@@ -20,7 +19,6 @@ export default function CreatePost() {
         }
     };
 
-    // 🚀 Upload image to ImageKit
     const uploadToImageKit = async (file) => {
         const formData = new FormData();
         formData.append("file", file);
@@ -42,10 +40,9 @@ export default function CreatePost() {
 
         if (!response.ok) throw new Error("Image upload failed");
         const data = await response.json();
-        return data.url; // ✅ final image URL
+        return data.url;
     };
 
-    // 📝 Handle Post Creation
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (caption.trim() === "" && !image) return;
@@ -84,7 +81,6 @@ export default function CreatePost() {
                 </h2>
 
                 <form onSubmit={handleSubmit} className="space-y-4">
-                    {/* Caption Input */}
                     <textarea
                         value={caption}
                         onChange={(e) => setCaption(e.target.value)}
@@ -93,7 +89,6 @@ export default function CreatePost() {
                         rows="3"
                     ></textarea>
 
-                    {/* Image Upload */}
                     <div className="flex flex-col gap-3 bg-gray-50 dark:bg-gray-800 p-3 rounded-xl border border-gray-300 dark:border-gray-700">
                         <input
                             type="file"
