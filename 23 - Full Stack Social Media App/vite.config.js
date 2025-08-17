@@ -6,6 +6,20 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineConfig({
     plugins: [react(), tailwindcss()],
     build: {
-        outDir: "dist",
+        outDir: "dist", // ✅ Output dir for Vercel
+        chunkSizeWarningLimit: 1000, // optional: suppresses >500kb warnings
+        rollupOptions: {
+            output: {
+                manualChunks: {
+                    // ✅ Code-splitting for smaller chunks
+                    react: ["react", "react-dom"],
+                    firebase: [
+                        "firebase/app",
+                        "firebase/auth",
+                        "firebase/firestore",
+                    ],
+                },
+            },
+        },
     },
 });
