@@ -28,7 +28,7 @@ export default function SideInfo() {
                     <FaArrowLeft />
                 </Link>
                 <img
-                    src={userInfo?.profilePic || "/assets/default-profile.png"}
+                    src={userInfo?.imageUrl || "/assets/default-profile.png"}
                     alt={userInfo?.name || user?.email}
                     className="w-14 h-14 rounded-full border object-cover"
                 />
@@ -37,7 +37,7 @@ export default function SideInfo() {
                         {userInfo?.name || user?.email || "Guest User"}
                     </h1>
                     <Link
-                        to={`/profile/${user?.uid}`}
+                        to={`/profile`}
                         className="text-sm text-blue-600 hover:underline"
                     >
                         View Profile
@@ -50,7 +50,7 @@ export default function SideInfo() {
                 {links.map((item, idx) => (
                     <Link
                         key={idx}
-                        to={item.path}
+                        to={"/"}
                         className="flex items-center gap-4 bg-white rounded-lg shadow-sm p-3 text-gray-700 font-medium hover:bg-gray-100 transition"
                     >
                         {item.icon}

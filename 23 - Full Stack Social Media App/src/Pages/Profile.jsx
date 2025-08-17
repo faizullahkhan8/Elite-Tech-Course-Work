@@ -49,24 +49,11 @@ export default function ProfilePage() {
                 />
 
                 <div className="absolute -bottom-16 max-sm:-bottom-[105px] px-6 w-full h-max flex items-end gap-4 max-sm:flex-col max-sm:items-start">
-                    <div className="relative">
-                        <img
-                            src={user?.imageUrl}
-                            alt={user?.name}
-                            className="w-36 h-36 rounded-full border-4 border-white object-cover"
-                        />
-                        <label
-                            htmlFor="profileImage"
-                            className="absolute right-4 bottom-0 w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center"
-                        >
-                            <FaPencil />
-                        </label>
-                        <input
-                            type="file"
-                            className="hidden"
-                            id="profileImage"
-                        />
-                    </div>
+                    <img
+                        src={user?.imageUrl}
+                        alt={user?.name}
+                        className="w-36 h-36 rounded-full border-4 border-white object-cover"
+                    />
                     <div className="pb-4">
                         <h1 className="text-4xl font-bold text-blue-600">
                             {user?.name}

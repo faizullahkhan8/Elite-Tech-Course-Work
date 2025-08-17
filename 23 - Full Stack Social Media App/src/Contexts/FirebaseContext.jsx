@@ -368,7 +368,7 @@ export const FirebaseContextProvider = ({ children }) => {
         });
 
         return () => unsub();
-    }, [setUserInfo]);
+    }, [setUserInfo, setUser]);
 
     return (
         <FirebaseContext.Provider
