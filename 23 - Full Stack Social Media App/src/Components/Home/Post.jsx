@@ -1,7 +1,7 @@
 import { FaHeart, FaSmile } from "react-icons/fa";
 import { Link } from "react-router";
 
-export default function Post({ name, time, text, avatar, image, likes }) {
+export default function Post({ id, name, time, text, avatar, image, likes }) {
     return (
         <div className="bg-white p-4 rounded-lg shadow mt-4">
             {/* User Info */}
@@ -22,7 +22,7 @@ export default function Post({ name, time, text, avatar, image, likes }) {
 
             {/* Post Image */}
             {image && (
-                <Link to={`/post/1`}>
+                <Link to={`/post/${id}`} className="block">
                     <img
                         src={image}
                         alt="Post"
@@ -35,7 +35,7 @@ export default function Post({ name, time, text, avatar, image, likes }) {
             <div className="flex items-center justify-between text-gray-600 text-sm">
                 <div className="flex items-center space-x-2">
                     <FaHeart className="text-red-500 mx-3 text-2xl" />{" "}
-                    <span>{likes}</span>
+                    <span>{likes.length}</span>
                 </div>
                 <button className="flex items-center space-x-2">
                     <FaSmile /> <span>Write your comment</span>

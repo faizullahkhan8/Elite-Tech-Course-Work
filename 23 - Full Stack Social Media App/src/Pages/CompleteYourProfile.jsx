@@ -41,7 +41,7 @@ export default function CompleteProfile() {
             if (userInfo) setUser(userInfo);
         };
         fetchUser();
-    }, []);
+    }, [getUserInfo]);
 
     const handleChange = (e) => {
         setUser({ ...user, [e.target.name]: e.target.value });
@@ -73,7 +73,9 @@ export default function CompleteProfile() {
                         "Basic " +
                         btoa(import.meta.env.VITE_IMAGEKIT_PRIVATE_KEY + ":"),
                 },
-            }).catch(() => {});
+            }).catch((error) => {
+                console.log(error);
+            });
         }
 
         // upload new one
@@ -161,6 +163,8 @@ export default function CompleteProfile() {
                     <input
                         type="file"
                         accept="image/*"
+                        className="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 cursor-pointer"
+                        required
                         onChange={(e) => handleImageSelect(e, "profile")}
                     />
                 </div>
@@ -186,6 +190,8 @@ export default function CompleteProfile() {
                     <input
                         type="file"
                         accept="image/*"
+                        required
+                        className="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 cursor-pointer"
                         onChange={(e) => handleImageSelect(e, "cover")}
                     />
                 </div>
@@ -199,6 +205,7 @@ export default function CompleteProfile() {
                         type="text"
                         name="name"
                         value={user.name}
+                        required
                         onChange={handleChange}
                         placeholder="Enter your full name"
                         className="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700"
@@ -246,6 +253,7 @@ export default function CompleteProfile() {
                         name="bio"
                         value={user.bio}
                         onChange={handleChange}
+                        required
                         placeholder="Write something about yourself..."
                         rows="3"
                         className="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700"
@@ -262,6 +270,7 @@ export default function CompleteProfile() {
                         name="dob"
                         value={user.dob}
                         onChange={handleChange}
+                        required
                         className="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700"
                     />
                 </div>
@@ -278,6 +287,7 @@ export default function CompleteProfile() {
                             value={user.city}
                             onChange={handleChange}
                             placeholder="Enter your city"
+                            required
                             className="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700"
                         />
                     </div>
@@ -290,6 +300,7 @@ export default function CompleteProfile() {
                             name="country"
                             value={user.country}
                             onChange={handleChange}
+                            required
                             placeholder="Enter your country"
                             className="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700"
                         />
@@ -305,6 +316,7 @@ export default function CompleteProfile() {
                         name="address"
                         value={user.address}
                         onChange={handleChange}
+                        required
                         placeholder="Enter your address"
                         className="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700"
                     />
@@ -319,6 +331,7 @@ export default function CompleteProfile() {
                         name="phone"
                         value={user.phone}
                         onChange={handleChange}
+                        required
                         placeholder="Enter your phone number"
                         className="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700"
                     />
@@ -333,6 +346,7 @@ export default function CompleteProfile() {
                         name="occupation"
                         value={user.occupation}
                         onChange={handleChange}
+                        required
                         placeholder="Your job/profession"
                         className="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700"
                     />
@@ -344,6 +358,7 @@ export default function CompleteProfile() {
                     </label>
                     <select
                         name="relationship"
+                        required
                         value={user.relationship}
                         onChange={handleChange}
                         className="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700"

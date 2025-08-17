@@ -1,26 +1,33 @@
 import { Link } from "react-router-dom";
 import { useFirebase } from "../Contexts/FirebaseContext";
-import { useEffect, useState } from "react";
+// import { useEffect, useState } from "react";
 import { FaPencil } from "react-icons/fa6";
+// import ProfileSkeleton from "../Components/ProfilePlaceholder";
 
 export default function ProfilePage() {
-    const { getUserInfo } = useFirebase();
-    const [user, setUser] = useState({});
+    const { userInfo: user } = useFirebase();
+    // const [user, setUser] = useState(userInfo);
+    // const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        const fetches = async () => {
-            const userInfo = await getUserInfo();
-            setUser(userInfo);
-        };
-        fetches();
-    }, [getUserInfo]);
+    // useEffect(() => {
+    //     const fetches = async () => {
+    //         const userInfo = await getUserInfo();
+    //         setUser(userInfo);
+    //         setLoading(false);
+    //     };
+    //     fetches();
+    // }, [getUserInfo]);
+
+    // if (loading) {
+    //     return <ProfileSkeleton />;
+    // }
 
     return (
         <div className="min-h-screen bg-gray-50">
             {/* Cover Photo Section */}
             <div className="relative w-full h-52 bg-gray-200">
                 <img
-                    src={user.coverUrl}
+                    src={user?.coverUrl}
                     alt="Cover"
                     className="w-full h-full object-cover"
                 />

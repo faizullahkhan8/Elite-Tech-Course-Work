@@ -104,7 +104,11 @@ const Login = () => {
                         <div
                             onClick={async (e) => {
                                 e.preventDefault();
-                                await firebaseContext.loginWithGoogle();
+                                await firebaseContext
+                                    .loginWithGoogle()
+                                    .then(() => {
+                                        navigate("/complete-your-profile");
+                                    });
                             }}
                             className="group relative p-2 border border-gray-300 rounded-lg overflow-hidden cursor-pointer"
                         >
