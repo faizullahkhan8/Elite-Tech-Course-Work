@@ -9,6 +9,7 @@ import {
     FaBriefcase,
     FaHeart,
     FaBook,
+    FaSpinner,
 } from "react-icons/fa";
 import { useFirebase } from "../Contexts/FirebaseContext";
 import { useNavigate } from "react-router";
@@ -23,6 +24,7 @@ export default function CompleteProfile() {
     const [previewCover, setPreviewCover] = useState(null);
     const [profileFile, setProfileFile] = useState(null);
     const [coverFile, setCoverFile] = useState(null);
+    const [loading, setLoading] = useState(false);
 
     const [userData, setUserData] = useState({
         name: "",
@@ -108,6 +110,7 @@ export default function CompleteProfile() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!user) return;
+        setLoading(true);
 
         let profileUrl = userData.imageUrl;
         let coverUrl = userData.coverUrl;
@@ -139,6 +142,7 @@ export default function CompleteProfile() {
         };
 
         await createUser(updatedUser);
+        setLoading(false);
         navigate("/profile");
     };
 
@@ -342,7 +346,11 @@ export default function CompleteProfile() {
                         type="submit"
                         className="bg-blue-500 hover:bg-blue-600 text-white px-5 py-2 rounded-lg font-semibold transition"
                     >
-                        Save Profile
+                        {loading ? (
+                            <FaSpinner className="animate-spin" />
+                        ) : (
+                            "Save Profile"
+                        )}
                     </button>
                 </div>
             </form>

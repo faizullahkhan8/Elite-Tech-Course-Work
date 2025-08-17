@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useFirebase } from "../Contexts/FirebaseContext";
 import { useNavigate } from "react-router";
+import { FaSpinner } from "react-icons/fa";
 
 export default function CreatePost() {
     const [caption, setCaption] = useState("");
@@ -113,7 +114,11 @@ export default function CreatePost() {
                         disabled={loading}
                         className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 rounded-xl transition disabled:opacity-50"
                     >
-                        {loading ? "Posting..." : "Post"}
+                        {loading ? (
+                            <FaSpinner className="animate-spin" />
+                        ) : (
+                            "Post"
+                        )}
                     </button>
                 </form>
             </div>
