@@ -6,7 +6,6 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineConfig({
     plugins: [react(), tailwindcss()],
     build: {
-        outDir: "dist", // ✅ Output dir for Vercel
         chunkSizeWarningLimit: 1000, // optional: suppresses >500kb warnings
         rollupOptions: {
             output: {
