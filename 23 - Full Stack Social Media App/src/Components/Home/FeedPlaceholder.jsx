@@ -1,6 +1,6 @@
 export default function FeedPlaceholder() {
     return (
-        <div className="space-y-4 animate-pulse">
+        <div className="space-y-4 animate-pulse mt-4">
             {[...Array(3)].map((_, i) => (
                 <div key={i} className="bg-white p-4 rounded-lg shadow">
                     {/* User info row */}

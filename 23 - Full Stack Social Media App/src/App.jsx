@@ -103,15 +103,15 @@ const Router = createBrowserRouter([
                             </Protected>
                         ),
                     },
+                    {
+                        path: "/profile",
+                        element: (
+                            <Protected>
+                                <ProfilePage />
+                            </Protected>
+                        ),
+                    },
                 ],
-            },
-            {
-                path: "/profile",
-                element: (
-                    <Protected>
-                        <ProfilePage />
-                    </Protected>
-                ),
             },
 
             {

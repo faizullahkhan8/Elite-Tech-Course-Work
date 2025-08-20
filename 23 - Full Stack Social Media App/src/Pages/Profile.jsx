@@ -5,7 +5,12 @@ import { FaPencil } from "react-icons/fa6";
 import { getDoc } from "firebase/firestore";
 
 export default function ProfilePage() {
-    const { userInfo: user, fetchUserPosts } = useFirebase();
+    const {
+        userInfo: user,
+        fetchUserPosts,
+        refreshUser,
+        setRefreshUser,
+    } = useFirebase();
     const [posts, setPosts] = useState([]);
     const [friends, setFriends] = useState([]);
 
@@ -22,6 +27,7 @@ export default function ProfilePage() {
 
     // 🔹 Fetch friends details (from refs)
     useEffect(() => {
+        setRefreshUser(!refreshUser);
         const loadFriends = async () => {
             if (user?.friends?.length > 0) {
                 const friendDocs = await Promise.all(
@@ -39,9 +45,9 @@ export default function ProfilePage() {
     }, [user]);
 
     return (
-        <div className="min-h-screen bg-gray-50">
+        <div className="min-h-screen flex-1 mx-4 rounded-2xl overflow-hidden bg-gray-50">
             {/* Cover Photo Section */}
-            <div className="relative w-full h-96 bg-gray-200">
+            <div className="relative h-96 bg-gray-200">
                 <img
                     src={user?.coverUrl}
                     alt="Cover"
@@ -129,10 +135,14 @@ export default function ProfilePage() {
                 {/* Right Content (Posts) */}
                 <div className="lg:col-span-2 space-y-4">
                     {/* Create Post */}
-                    <div className="bg-white p-4 rounded-lg shadow-sm">
-                        <p className="text-gray-500">
-                            What's on your mind, {user?.name}?
-                        </p>
+                    <div>
+                        <Link to={"/post/create"} className="my-4">
+                            <div className="bg-white p-4 rounded-lg shadow-sm">
+                                <p className="text-gray-500">
+                                    What's on your mind, {user?.name}?
+                                </p>
+                            </div>
+                        </Link>
                     </div>
 
                     {/* User Posts */}

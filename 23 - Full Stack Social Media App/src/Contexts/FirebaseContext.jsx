@@ -1,6 +1,7 @@
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useEffect, useState } from "react";
 import { initializeApp } from "firebase/app";
+import { ref, onValue, push, getDatabase, set } from "firebase/database";
 import {
     getAuth,
     createUserWithEmailAndPassword,
@@ -39,6 +40,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const firebaseAuth = getAuth(app);
 const db = getFirestore(app);
+const rtdb = getDatabase(app);
 
 const FirebaseContext = createContext(null);
 
@@ -48,6 +50,8 @@ export const FirebaseContextProvider = ({ children }) => {
     const [user, setUser] = useState(null); // Firebase Auth user
     const [userInfo, setUserInfo] = useState(null); // Firestore profile
     const [loading, setLoading] = useState(true);
+    const [refreshUser, setRefreshUser] = useState(false);
+    const [notifications, setNotifications] = useState([]);
 
     const signupUserWithEmailAndPassword = (email, password) =>
         createUserWithEmailAndPassword(firebaseAuth, email, password);
@@ -108,6 +112,8 @@ export const FirebaseContextProvider = ({ children }) => {
         try {
             if (!user) throw new Error("User not logged in");
 
+            // create friend request notification
+
             const userRef = doc(db, "users", user.uid);
             const friendRef = doc(db, "users", friendId);
 
@@ -123,6 +129,8 @@ export const FirebaseContextProvider = ({ children }) => {
     const removeFriend = async (id) => {
         try {
             if (!user) throw new Error("User not logged in");
+
+            // create friend request notification
 
             const userRef = doc(db, "users", user.uid);
             const friendRef = doc(db, "users", id);
@@ -352,6 +360,79 @@ export const FirebaseContextProvider = ({ children }) => {
     };
 
     useEffect(() => {
+        if (!user?.uid) return;
+
+        const notifRef = ref(rtdb, `notifications/${user.uid}`);
+
+        const unsubscribe = onValue(notifRef, async (snapshot) => {
+            const data = snapshot.val();
+            if (!data) {
+                setNotifications([]);
+                return;
+            }
+
+            // Convert object → array + fetch sender info
+            const notifsArray = await Promise.all(
+                Object.entries(data).map(async ([id, notif]) => {
+                    let sender = null;
+
+                    // fetch sender details from Firestore
+                    if (notif.senderId) {
+                        try {
+                            const senderSnap = await getDoc(
+                                doc(db, "users", notif.senderId)
+                            );
+                            if (senderSnap.exists()) {
+                                sender = {
+                                    id: senderSnap.id,
+                                    ...senderSnap.data(),
+                                };
+                            }
+                        } catch (error) {
+                            console.error("Error fetching sender info:", error);
+                        }
+                    }
+
+                    return {
+                        id,
+                        ...notif,
+                        sender,
+                        createdAt: notif.createdAt
+                            ? new Date(notif.createdAt)
+                            : null,
+                    };
+                })
+            );
+
+            // Sort newest → oldest
+            notifsArray.sort((a, b) => {
+                if (!a.createdAt || !b.createdAt) return 0;
+                return b.createdAt - a.createdAt;
+            });
+
+            setNotifications(notifsArray);
+        });
+
+        return () => unsubscribe();
+    }, [user]);
+
+    // Add notification
+    const addNotification = async (receiverId, notification) => {
+        try {
+            const notificationsRef = ref(rtdb, `notifications/${receiverId}`);
+            const newNotificationRef = push(notificationsRef);
+
+            await set(newNotificationRef, {
+                ...notification,
+                createdAt: serverTimestamp(),
+                read: false,
+            });
+        } catch (error) {
+            console.error("Error adding notification:", error);
+        }
+    };
+
+    useEffect(() => {
         const unsub = onAuthStateChanged(firebaseAuth, async (authUser) => {
             setLoading(true);
             if (authUser) {
@@ -377,6 +458,8 @@ export const FirebaseContextProvider = ({ children }) => {
                 loginUserWithEmailAndPassword,
                 loginWithGoogle,
                 logoutUser,
+                refreshUser,
+                setRefreshUser,
                 createUser,
                 getUserInfo,
                 allUsers,
@@ -392,6 +475,8 @@ export const FirebaseContextProvider = ({ children }) => {
                 getPostComments,
                 addLike,
                 removeLike,
+                notifications,
+                addNotification,
                 firebaseAuth,
                 user, // Firebase Auth User
                 userInfo, // Firestore Profile
