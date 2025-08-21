@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import {
     Zap,
@@ -16,6 +16,7 @@ const Message = () => {
     const [currentWord, setCurrentWord] = useState(0);
     const [isVisible, setIsVisible] = useState(false);
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+    const frameRef = useRef(null);
 
     const highlightWords = [
         {
@@ -58,7 +59,7 @@ const Message = () => {
     useEffect(() => {
         const timer = setInterval(() => {
             setCurrentWord((prev) => (prev + 1) % highlightWords.length);
-        }, 2000);
+        }, 2500);
         return () => clearInterval(timer);
     }, []);
 
@@ -67,58 +68,39 @@ const Message = () => {
     }, []);
 
     const handleMouseMove = (e) => {
-        const rect = e.currentTarget.getBoundingClientRect();
-        setMousePosition({
-            x: e.clientX - rect.left,
-            y: e.clientY - rect.top,
+        if (frameRef.current) cancelAnimationFrame(frameRef.current);
+        frameRef.current = requestAnimationFrame(() => {
+            const rect = e.currentTarget.getBoundingClientRect();
+            setMousePosition({
+                x: e.clientX - rect.left,
+                y: e.clientY - rect.top,
+            });
         });
     };
 
     const containerVariants = {
-        hidden: { opacity: 0, scale: 0.9 },
+        hidden: { opacity: 0, scale: 0.95 },
         visible: {
             opacity: 1,
             scale: 1,
-            transition: {
-                duration: 0.8,
-                staggerChildren: 0.1,
-            },
+            transition: { duration: 0.5, staggerChildren: 0.1 },
         },
     };
 
     const itemVariants = {
-        hidden: { y: 30, opacity: 0 },
+        hidden: { y: 20, opacity: 0 },
         visible: {
             y: 0,
             opacity: 1,
-            transition: { duration: 0.6, ease: "easeOut" },
-        },
-    };
-
-    const wordVariants = {
-        hidden: { scale: 0, opacity: 0, rotateX: -90 },
-        visible: {
-            scale: 1,
-            opacity: 1,
-            rotateX: 0,
-            transition: {
-                duration: 0.6,
-                ease: "easeOut",
-                type: "spring",
-                stiffness: 200,
-            },
+            transition: { duration: 0.4, ease: "easeOut" },
         },
     };
 
     const glowVariants = {
         animate: {
-            scale: [1, 1.2, 1],
+            scale: [1, 1.15, 1],
             opacity: [0.5, 0.8, 0.5],
-            transition: {
-                duration: 2,
-                repeat: Infinity,
-                ease: "easeInOut",
-            },
+            transition: { duration: 3, repeat: Infinity, ease: "easeInOut" },
         },
     };
 
@@ -132,11 +114,11 @@ const Message = () => {
         >
             {/* Animated background elements */}
             <div className="absolute inset-0 overflow-hidden">
-                {/* Floating particles */}
-                {[...Array(20)].map((_, i) => (
+                {/* Floating particles (reduced from 20 to 8) */}
+                {[...Array(8)].map((_, i) => (
                     <motion.div
                         key={i}
-                        className={`absolute w-1 h-1 rounded-full ${
+                        className={`absolute w-1.5 h-1.5 rounded-full will-change-transform ${
                             i % 4 === 0
                                 ? "bg-blue-400"
                                 : i % 4 === 1
@@ -150,52 +132,51 @@ const Message = () => {
                             top: `${Math.random() * 100}%`,
                         }}
                         animate={{
-                            scale: [0, 1, 0],
+                            y: [0, -80, -160],
                             opacity: [0, 1, 0],
-                            y: [0, -100, -200],
+                            scale: [0.8, 1, 0.8],
                         }}
                         transition={{
-                            duration: 3 + Math.random() * 2,
+                            duration: 4 + Math.random() * 2,
                             repeat: Infinity,
-                            delay: Math.random() * 3,
+                            delay: Math.random() * 2,
                             ease: "easeOut",
                         }}
                     />
                 ))}
 
-                {/* Gradient orbs */}
+                {/* Gradient orb following mouse */}
                 <motion.div
-                    className="absolute w-96 h-96 bg-gradient-to-r from-blue-600/20 to-purple-600/20 rounded-full blur-3xl"
+                    className="absolute w-80 h-80 bg-gradient-to-r from-blue-600/20 to-purple-600/20 rounded-full blur-3xl will-change-transform"
                     style={{
-                        left: mousePosition.x - 192,
-                        top: mousePosition.y - 192,
+                        left: mousePosition.x - 160,
+                        top: mousePosition.y - 160,
                     }}
-                    transition={{ type: "spring", stiffness: 50, damping: 15 }}
+                    transition={{ type: "spring", stiffness: 40, damping: 20 }}
                 />
 
-                {[...Array(3)].map((_, i) => (
+                {/* Background gradient orbs (reduced to 2) */}
+                {[...Array(2)].map((_, i) => (
                     <motion.div
                         key={i}
-                        className={`absolute w-64 h-64 rounded-full blur-2xl ${
+                        className={`absolute w-64 h-64 rounded-full blur-2xl will-change-transform ${
                             i === 0
                                 ? "bg-gradient-to-r from-blue-500/10 to-purple-500/10"
-                                : i === 1
-                                ? "bg-gradient-to-r from-purple-500/10 to-pink-500/10"
                                 : "bg-gradient-to-r from-pink-500/10 to-yellow-500/10"
                         }`}
                         style={{
-                            left: `${20 + i * 30}%`,
-                            top: `${10 + i * 20}%`,
+                            left: `${25 + i * 30}%`,
+                            top: `${15 + i * 25}%`,
                         }}
                         animate={{
-                            scale: [1, 1.2, 1],
+                            scale: [1, 1.1, 1],
                             rotate: [0, 180, 360],
-                            opacity: [0.1, 0.2, 0.1],
+                            opacity: [0.08, 0.15, 0.08],
                         }}
                         transition={{
-                            duration: 8 + i * 2,
+                            duration: 12,
                             repeat: Infinity,
-                            delay: i * 1,
+                            delay: i * 2,
                         }}
                     />
                 ))}
@@ -210,11 +191,8 @@ const Message = () => {
                     {[Zap, Crown, Flame].map((Icon, index) => (
                         <motion.div
                             key={index}
-                            className="relative"
-                            animate={{
-                                rotate: [0, 360],
-                                scale: [1, 1.1, 1],
-                            }}
+                            className="relative will-change-transform"
+                            animate={{ scale: [1, 1.1, 1] }}
                             transition={{
                                 duration: 3,
                                 repeat: Infinity,
@@ -223,7 +201,7 @@ const Message = () => {
                             }}
                         >
                             <motion.div
-                                className="absolute inset-0 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-full blur-lg opacity-60"
+                                className="absolute inset-0 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-full blur-lg opacity-50"
                                 variants={glowVariants}
                                 animate="animate"
                             />
@@ -237,149 +215,46 @@ const Message = () => {
                     className="text-center mb-12"
                     variants={itemVariants}
                 >
-                    <motion.div className="relative inline-block">
-                        <motion.h1
-                            className="text-4xl md:text-6xl lg:text-7xl font-black text-white leading-tight"
-                            initial={{ opacity: 0, y: 50 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.8, delay: 0.2 }}
-                        >
-                            #GIVE AN{" "}
-                            <motion.span
-                                className="relative inline-block"
-                                whileHover={{ scale: 1.05 }}
-                            >
-                                <motion.span
-                                    className="bg-gradient-to-r from-yellow-400 via-orange-400 to-red-400 bg-clip-text text-transparent font-black"
-                                    animate={{
-                                        backgroundPosition: [
-                                            "0%",
-                                            "100%",
-                                            "0%",
-                                        ],
-                                    }}
-                                    transition={{
-                                        duration: 3,
-                                        repeat: Infinity,
-                                        ease: "easeInOut",
-                                    }}
-                                >
-                                    OPPORTUNITY
-                                </motion.span>
-                                <motion.div
-                                    className="absolute -inset-2 bg-gradient-to-r from-yellow-400/20 to-orange-400/20 blur-xl rounded-lg"
-                                    animate={{
-                                        scale: [1, 1.1, 1],
-                                        opacity: [0.3, 0.6, 0.3],
-                                    }}
-                                    transition={{
-                                        duration: 2,
-                                        repeat: Infinity,
-                                    }}
-                                />
-                            </motion.span>
-                        </motion.h1>
+                    <motion.h1
+                        className="text-4xl md:text-6xl lg:text-7xl font-black text-white leading-tight"
+                        initial={{ opacity: 0, y: 40 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6, delay: 0.2 }}
+                    >
+                        #GIVE AN{" "}
+                        <span className="bg-gradient-to-r from-yellow-400 via-orange-400 to-red-400 bg-clip-text text-transparent">
+                            OPPORTUNITY
+                        </span>
+                    </motion.h1>
+                    <motion.h1
+                        className="text-4xl md:text-6xl lg:text-7xl font-black text-white leading-tight mt-4"
+                        initial={{ opacity: 0, y: 40 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6, delay: 0.4 }}
+                    >
+                        AND SEE YOUR{" "}
+                        <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+                            NEXT PROJECT
+                        </span>
+                    </motion.h1>
 
+                    <motion.div
+                        className="mt-8 relative"
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.6, delay: 0.6 }}
+                    >
                         <motion.h1
-                            className="text-4xl md:text-6xl lg:text-7xl font-black text-white leading-tight mt-4"
-                            initial={{ opacity: 0, y: 50 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.8, delay: 0.4 }}
-                        >
-                            AND SEE YOUR{" "}
-                            <motion.span
-                                className="relative inline-block"
-                                whileHover={{ scale: 1.05 }}
-                            >
-                                <motion.span
-                                    className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent font-black"
-                                    animate={{
-                                        backgroundPosition: [
-                                            "0%",
-                                            "100%",
-                                            "0%",
-                                        ],
-                                    }}
-                                    transition={{
-                                        duration: 3,
-                                        repeat: Infinity,
-                                        ease: "easeInOut",
-                                        delay: 1,
-                                    }}
-                                >
-                                    NEXT PROJECT
-                                </motion.span>
-                                <motion.div
-                                    className="absolute -inset-2 bg-gradient-to-r from-blue-400/20 to-purple-400/20 blur-xl rounded-lg"
-                                    animate={{
-                                        scale: [1, 1.1, 1],
-                                        opacity: [0.3, 0.6, 0.3],
-                                    }}
-                                    transition={{
-                                        duration: 2,
-                                        repeat: Infinity,
-                                        delay: 0.5,
-                                    }}
-                                />
-                            </motion.span>
-                        </motion.h1>
-
-                        <motion.div
-                            className="mt-8 relative"
-                            initial={{ opacity: 0, scale: 0 }}
-                            animate={{ opacity: 1, scale: 1 }}
+                            className="text-5xl md:text-7xl lg:text-8xl font-black bg-gradient-to-r from-green-400 via-emerald-400 to-teal-400 bg-clip-text text-transparent"
+                            animate={{ scale: [1, 1.03, 1] }}
                             transition={{
-                                duration: 0.8,
-                                delay: 0.6,
-                                type: "spring",
+                                duration: 2.5,
+                                repeat: Infinity,
+                                ease: "easeInOut",
                             }}
                         >
-                            <motion.h1
-                                className="text-5xl md:text-7xl lg:text-8xl font-black bg-gradient-to-r from-green-400 via-emerald-400 to-teal-400 bg-clip-text text-transparent"
-                                animate={{
-                                    scale: [1, 1.05, 1],
-                                    rotateZ: [0, 1, -1, 0],
-                                }}
-                                transition={{
-                                    duration: 2,
-                                    repeat: Infinity,
-                                    ease: "easeInOut",
-                                }}
-                            >
-                                RANK #1
-                            </motion.h1>
-
-                            {/* Sparkle effects around RANK */}
-                            {[...Array(8)].map((_, i) => (
-                                <motion.div
-                                    key={i}
-                                    className="absolute w-3 h-3 bg-yellow-400 rounded-full"
-                                    style={{
-                                        left: `${
-                                            10 +
-                                            Math.cos((i * 45 * Math.PI) / 180) *
-                                                120
-                                        }px`,
-                                        top: `${
-                                            30 +
-                                            Math.sin((i * 45 * Math.PI) / 180) *
-                                                60
-                                        }px`,
-                                    }}
-                                    animate={{
-                                        scale: [0, 1, 0],
-                                        rotate: [0, 180, 360],
-                                        opacity: [0, 1, 0],
-                                    }}
-                                    transition={{
-                                        duration: 2,
-                                        repeat: Infinity,
-                                        delay: i * 0.2,
-                                        ease: "easeInOut",
-                                    }}
-                                />
-                            ))}
-                        </motion.div>
+                            RANK #1
+                        </motion.h1>
                     </motion.div>
                 </motion.div>
 
@@ -391,7 +266,7 @@ const Message = () => {
                     {achievements.map((achievement, index) => (
                         <motion.div
                             key={index}
-                            className="relative group cursor-pointer"
+                            className="relative group cursor-pointer will-change-transform"
                             variants={itemVariants}
                             whileHover={{ scale: 1.05, y: -5 }}
                             whileTap={{ scale: 0.95 }}
@@ -404,12 +279,9 @@ const Message = () => {
                                 <div className="flex flex-col items-center gap-2">
                                     <motion.div
                                         className={`w-12 h-12 rounded-xl bg-gradient-to-r ${achievement.color} flex items-center justify-center shadow-lg`}
-                                        animate={{
-                                            rotate: [0, 10, -10, 0],
-                                            scale: [1, 1.1, 1],
-                                        }}
+                                        animate={{ scale: [1, 1.08, 1] }}
                                         transition={{
-                                            duration: 2,
+                                            duration: 2.5,
                                             repeat: Infinity,
                                             delay: index * 0.3,
                                         }}
@@ -428,9 +300,9 @@ const Message = () => {
                 {/* Call to Action Button */}
                 <motion.div
                     variants={itemVariants}
-                    initial={{ opacity: 0, y: 50 }}
+                    initial={{ opacity: 0, y: 40 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, delay: 0.8 }}
+                    transition={{ duration: 0.6, delay: 0.8 }}
                 >
                     <a
                         href="mailto:faizullahofficial0@gmail.com?subject=Job Opportunity&body=Hello Faiz,"
@@ -440,8 +312,7 @@ const Message = () => {
                             className="relative group px-12 py-6 bg-gradient-to-r from-yellow-400 via-orange-400 to-red-400 text-black text-xl font-black rounded-2xl shadow-2xl overflow-hidden"
                             whileHover={{
                                 scale: 1.05,
-                                boxShadow:
-                                    "0 25px 50px rgba(251, 191, 36, 0.5)",
+                                boxShadow: "0 20px 40px rgba(251,191,36,0.4)",
                             }}
                             whileTap={{ scale: 0.95 }}
                         >
@@ -454,7 +325,7 @@ const Message = () => {
                             <span className="relative z-10 flex items-center gap-3">
                                 LET'S DOMINATE TOGETHER
                                 <motion.div
-                                    animate={{ x: [0, 10, 0] }}
+                                    animate={{ x: [0, 8, 0] }}
                                     transition={{
                                         duration: 1.5,
                                         repeat: Infinity,
@@ -463,46 +334,8 @@ const Message = () => {
                                     <Rocket className="w-6 h-6" />
                                 </motion.div>
                             </span>
-
-                            {/* Button shine effect */}
-                            <motion.div
-                                className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-white to-transparent opacity-0"
-                                animate={{
-                                    x: ["-100%", "100%"],
-                                    opacity: [0, 0.3, 0],
-                                }}
-                                transition={{
-                                    duration: 2,
-                                    repeat: Infinity,
-                                    repeatDelay: 1,
-                                }}
-                            />
                         </motion.button>
                     </a>
-                </motion.div>
-
-                {/* Bottom decorative elements */}
-                <motion.div
-                    className="flex items-center gap-4 mt-8"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 1, duration: 0.6 }}
-                >
-                    {[...Array(5)].map((_, i) => (
-                        <motion.div
-                            key={i}
-                            className="w-2 h-2 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-full"
-                            animate={{
-                                scale: [1, 1.5, 1],
-                                opacity: [0.5, 1, 0.5],
-                            }}
-                            transition={{
-                                duration: 1.5,
-                                repeat: Infinity,
-                                delay: i * 0.2,
-                            }}
-                        />
-                    ))}
                 </motion.div>
             </div>
         </motion.div>
