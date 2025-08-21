@@ -1,18 +1,23 @@
 import styles from "./App.module.css";
-import GetInTouch from "./components/GetInTouch/GetInTouch";
-import Hero from "./components/Hero/Hero";
-import Message from "./components/Message/Message";
-import Projects from "./components/Projects/Projects";
-import Technology from "./components/Technologies/Technology";
+import { Suspense, lazy } from "react";
+
+const GetInTouch = lazy(() => import("./components/GetInTouch/GetInTouch"));
+const Hero = lazy(() => import("./components/Hero/Hero"));
+const Message = lazy(() => import("./components/Message/Message"));
+const Projects = lazy(() => import("./components/Projects/Projects"));
+const Technology = lazy(() => import("./components/Technologies/Technology"));
+const LoadingScreen = lazy(() => import("./components/Loader/Loader"));
 
 function App() {
     return (
         <div className={styles.container}>
-            <Hero />
-            <Technology />
-            <Projects />
-            <Message />
-            <GetInTouch />
+            <Suspense fallback={<LoadingScreen />}>
+                <Hero />
+                <Technology />
+                <Projects />
+                <Message />
+                <GetInTouch />
+            </Suspense>
         </div>
     );
 }
