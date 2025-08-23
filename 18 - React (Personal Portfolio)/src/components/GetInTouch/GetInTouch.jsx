@@ -23,9 +23,7 @@ const GetInTouch = () => {
     });
     const [focusedField, setFocusedField] = useState(null);
     const [isSubmitted, setIsSubmitted] = useState(false);
-    const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
     const [isTyping, setIsTyping] = useState(false);
-    const containerRef = useRef(null);
 
     const handleInputChange = useCallback((field, value) => {
         setFormData((prev) => ({ ...prev, [field]: value }));
@@ -39,18 +37,7 @@ const GetInTouch = () => {
         setTimeout(() => setIsSubmitted(false), 3000);
     }, []);
 
-    const handleMouseMove = useCallback(
-        (e) => {
-            if (containerRef.current) {
-                const rect = containerRef.current.getBoundingClientRect();
-                setMousePosition({
-                    x: e.clientX - rect.left,
-                    y: e.clientY - rect.top,
-                });
-            }
-        },
-        [containerRef]
-    );
+    // Removed mouse move handler for better performance
 
     const containerVariants = useMemo(
         () => ({
@@ -79,118 +66,16 @@ const GetInTouch = () => {
         []
     );
 
-    const floatingVariants = useMemo(
-        () => ({
-            animate: {
-                y: [-10, 10, -10],
-                rotate: [-5, 5, -5],
-                transition: {
-                    duration: 4,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                },
-            },
-        }),
-        []
-    );
-
-    const pulseVariants = useMemo(
-        () => ({
-            animate: {
-                scale: [1, 1.05, 1],
-                transition: {
-                    duration: 2,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                },
-            },
-        }),
-        []
-    );
+    // Removed floating and pulse variants for better performance
 
     return (
         <motion.div
-            ref={containerRef}
             className="relative w-full min-h-screen overflow-hidden bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 rounded-3xl shadow-2xl"
             variants={containerVariants}
             initial="hidden"
             animate="visible"
-            onMouseMove={handleMouseMove}
         >
-            {/* Animated background elements */}
-            <div className="absolute inset-0 overflow-hidden">
-                {/* Interactive glow orb following mouse */}
-                <motion.div
-                    className="absolute w-96 h-96 bg-gradient-to-r from-blue-400/20 via-purple-400/20 to-pink-400/20 rounded-full blur-3xl pointer-events-none"
-                    animate={{
-                        x: mousePosition.x - 192,
-                        y: mousePosition.y - 192,
-                    }}
-                    transition={{ type: "spring", stiffness: 50, damping: 15 }}
-                />
-
-                {/* Floating hearts and sparkles */}
-                {[...Array(15)].map((_, i) => (
-                    <motion.div
-                        key={i}
-                        className="absolute"
-                        style={{
-                            left: `${Math.random() * 100}%`,
-                            top: `${Math.random() * 100}%`,
-                        }}
-                        animate={{
-                            y: [0, -50, 0],
-                            x: [0, Math.random() * 30 - 15, 0],
-                            rotate: [0, 360],
-                            scale: [0, 1, 0],
-                            opacity: [0, 0.6, 0],
-                        }}
-                        transition={{
-                            duration: 4 + Math.random() * 2,
-                            repeat: Infinity,
-                            delay: Math.random() * 3,
-                        }}
-                    >
-                        {i % 3 === 0 ? (
-                            <Heart className="w-4 h-4 text-pink-400" />
-                        ) : i % 3 === 1 ? (
-                            <Star className="w-3 h-3 text-yellow-400" />
-                        ) : (
-                            <Sparkles className="w-3 h-3 text-purple-400" />
-                        )}
-                    </motion.div>
-                ))}
-
-                {/* Background gradient orbs */}
-                {[...Array(4)].map((_, i) => (
-                    <motion.div
-                        key={i}
-                        className={`absolute w-64 h-64 rounded-full blur-2xl ${
-                            i === 0
-                                ? "bg-gradient-to-r from-blue-300/20 to-purple-300/20"
-                                : i === 1
-                                ? "bg-gradient-to-r from-purple-300/20 to-pink-300/20"
-                                : i === 2
-                                ? "bg-gradient-to-r from-pink-300/20 to-orange-300/20"
-                                : "bg-gradient-to-r from-orange-300/20 to-yellow-300/20"
-                        }`}
-                        style={{
-                            left: `${20 + i * 20}%`,
-                            top: `${10 + i * 25}%`,
-                        }}
-                        animate={{
-                            scale: [1, 1.2, 1],
-                            rotate: [0, 180, 360],
-                            opacity: [0.1, 0.3, 0.1],
-                        }}
-                        transition={{
-                            duration: 10 + i * 2,
-                            repeat: Infinity,
-                            delay: i * 2,
-                        }}
-                    />
-                ))}
-            </div>
+            {/* Removed background animations for better performance */}
 
             <div className="relative z-10 flex flex-col items-center p-8 min-h-screen justify-center">
                 {/* Header Section */}
@@ -199,30 +84,10 @@ const GetInTouch = () => {
                     variants={itemVariants}
                 >
                     <motion.div className="flex items-center justify-center gap-4 mb-6">
-                        <motion.div
-                            animate={{
-                                rotate: [0, 20, -20, 0],
-                                scale: [1, 1.2, 1],
-                            }}
-                            transition={{
-                                duration: 2,
-                                repeat: Infinity,
-                                ease: "easeInOut",
-                            }}
-                        >
+                        <motion.div>
                             <span className="text-6xl">👋</span>
                         </motion.div>
-                        <motion.h1
-                            className="text-5xl md:text-7xl font-black bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent"
-                            animate={{
-                                backgroundPosition: ["0%", "100%", "0%"],
-                            }}
-                            transition={{
-                                duration: 3,
-                                repeat: Infinity,
-                                ease: "easeInOut",
-                            }}
-                        >
+                        <motion.h1 className="text-5xl md:text-7xl font-black bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
                             Get in Touch
                         </motion.h1>
                         <motion.div
@@ -232,7 +97,6 @@ const GetInTouch = () => {
                             }}
                             transition={{
                                 duration: 2,
-                                repeat: Infinity,
                                 ease: "easeInOut",
                                 delay: 0.5,
                             }}
@@ -260,23 +124,10 @@ const GetInTouch = () => {
                     >
                         <motion.div
                             className="relative w-80 h-80 bg-gradient-to-br from-white/80 to-gray-100/80 backdrop-blur-sm rounded-full shadow-2xl border border-white/40 flex items-center justify-center overflow-hidden"
-                            variants={floatingVariants}
-                            animate="animate"
                             whileHover={{ scale: 1.05 }}
                         >
                             {/* Placeholder character - could be replaced with actual image */}
-                            <motion.div
-                                className="text-9xl"
-                                animate={
-                                    isTyping
-                                        ? {
-                                              rotate: [0, 5, -5, 0],
-                                              scale: [1, 1.1, 1],
-                                          }
-                                        : {}
-                                }
-                                transition={{ duration: 0.5 }}
-                            >
+                            <motion.div className="text-9xl">
                                 {isSubmitted ? "🎉" : isTyping ? "⌨️" : "💻"}
                             </motion.div>
 
@@ -305,12 +156,11 @@ const GetInTouch = () => {
                                             transition={{
                                                 rotate: {
                                                     duration: 20,
-                                                    repeat: Infinity,
                                                     ease: "linear",
+                                                    repeat: Infinity,
                                                 },
                                                 scale: {
                                                     duration: 2,
-                                                    repeat: Infinity,
                                                     delay: index * 0.5,
                                                 },
                                             }}
@@ -321,13 +171,6 @@ const GetInTouch = () => {
                                     );
                                 }
                             )}
-
-                            {/* Glow effect */}
-                            <motion.div
-                                className="absolute inset-0 bg-gradient-to-r from-blue-400/20 via-purple-400/20 to-pink-400/20 rounded-full blur-xl"
-                                variants={pulseVariants}
-                                animate="animate"
-                            />
                         </motion.div>
                     </motion.div>
 
@@ -529,26 +372,13 @@ const GetInTouch = () => {
                                                 animate={{ x: [0, 5, 0] }}
                                                 transition={{
                                                     duration: 1.5,
-                                                    repeat: Infinity,
                                                 }}
                                             >
                                                 <Send className="w-5 h-5" />
                                             </motion.div>
                                         </span>
 
-                                        {/* Button shine effect */}
-                                        <motion.div
-                                            className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-white to-transparent opacity-0"
-                                            animate={{
-                                                x: ["-100%", "100%"],
-                                                opacity: [0, 0.3, 0],
-                                            }}
-                                            transition={{
-                                                duration: 2,
-                                                repeat: Infinity,
-                                                repeatDelay: 2,
-                                            }}
-                                        />
+                                        {/* Removed button shine effect for better performance */}
                                     </motion.button>
                                 </motion.form>
                             ) : (
@@ -589,37 +419,7 @@ const GetInTouch = () => {
                                         something amazing together! 🚀
                                     </motion.p>
 
-                                    {/* Celebration particles */}
-                                    {[...Array(12)].map((_, i) => (
-                                        <motion.div
-                                            key={i}
-                                            className="absolute"
-                                            style={{
-                                                left: "50%",
-                                                top: "50%",
-                                                x:
-                                                    Math.cos(
-                                                        (i * 30 * Math.PI) / 180
-                                                    ) * 100,
-                                                y:
-                                                    Math.sin(
-                                                        (i * 30 * Math.PI) / 180
-                                                    ) * 100,
-                                            }}
-                                            animate={{
-                                                scale: [0, 1, 0],
-                                                rotate: [0, 720],
-                                                opacity: [0, 1, 0],
-                                            }}
-                                            transition={{
-                                                duration: 2,
-                                                delay: i * 0.1,
-                                                ease: "easeOut",
-                                            }}
-                                        >
-                                            <Star className="w-4 h-4 text-yellow-400 fill-current" />
-                                        </motion.div>
-                                    ))}
+                                    {/* Removed celebration particles for better performance */}
                                 </motion.div>
                             )}
                         </AnimatePresence>

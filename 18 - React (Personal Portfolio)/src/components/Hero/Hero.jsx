@@ -6,13 +6,7 @@ import React, {
     useMemo,
     useCallback,
 } from "react";
-import {
-    motion,
-    AnimatePresence,
-    useScroll,
-    useTransform,
-    useSpring,
-} from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import {
     Mail,
     Download,
@@ -36,20 +30,12 @@ import MyPassportSizePic from "../../assets/Passport Size Faiz Ullah.png";
 const Hero = () => {
     const [copied, setCopied] = useState(false);
     const [isHovered, setIsHovered] = useState(false);
-    const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+    // Removed mousePosition state for better performance
     const [currentTitle, setCurrentTitle] = useState(0);
     const [isTyping, setIsTyping] = useState(false);
-    const containerRef = useRef(null);
+    // Removed containerRef for better performance
 
-    const { scrollY } = useScroll();
-    const y1 = useTransform(scrollY, [0, 300], [0, -50]);
-    const y2 = useTransform(scrollY, [0, 300], [0, -100]);
-    // Removed the opacity transform that was causing the whitening effect
-    // const opacity = useTransform(scrollY, [0, 300], [1, 0.8]);
-
-    const springConfig = { stiffness: 100, damping: 30, restDelta: 0.001 };
-    const x = useSpring(0, springConfig);
-    const y = useSpring(0, springConfig);
+    // Removed scroll and spring animations for better performance
 
     const titles = useMemo(
         () => [
@@ -125,19 +111,7 @@ const Hero = () => {
         return () => clearInterval(titleInterval);
     }, [titles.length]);
 
-    const handleMouseMove = (e) => {
-        if (containerRef.current) {
-            const rect = containerRef.current.getBoundingClientRect();
-            const centerX = rect.width / 2;
-            const centerY = rect.height / 2;
-            const mouseX = e.clientX - rect.left - centerX;
-            const mouseY = e.clientY - rect.top - centerY;
-
-            setMousePosition({ x: mouseX, y: mouseY });
-            x.set(mouseX * 0.05);
-            y.set(mouseY * 0.05);
-        }
-    };
+    // Removed mouse move handler for better performance
 
     const handleCopyEmail = () => {
         navigator.clipboard.writeText("faizullahofficial0@gmail.com");
@@ -200,132 +174,12 @@ const Hero = () => {
 
     return (
         <motion.div
-            ref={containerRef}
             className="relative w-full min-h-screen overflow-hidden bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900"
             variants={containerVariants}
             initial="hidden"
             animate="visible"
-            onMouseMove={handleMouseMove}
-            // Removed the style={{ opacity }} that was causing the whitening effect
         >
-            {/* 3D Parallax Background Layers */}
-            <div className="absolute inset-0 overflow-hidden">
-                {/* Layer 1 - Deepest */}
-                <motion.div style={{ y: y2 }} className="absolute inset-0">
-                    {[...Array(50)].map((_, i) => (
-                        <motion.div
-                            key={`layer1-${i}`}
-                            className="absolute w-1 h-1 bg-blue-400/30 rounded-full"
-                            style={{
-                                left: `${Math.random() * 100}%`,
-                                top: `${Math.random() * 100}%`,
-                            }}
-                            animate={{
-                                scale: [0.5, 1.5, 0.5],
-                                opacity: [0.3, 0.8, 0.3],
-                                rotate: [0, 180, 360],
-                            }}
-                            transition={{
-                                duration: 4 + Math.random() * 4,
-                                repeat: Infinity,
-                                delay: Math.random() * 2,
-                            }}
-                        />
-                    ))}
-                </motion.div>
-
-                {/* Layer 2 - Middle */}
-                <motion.div style={{ y: y1 }} className="absolute inset-0">
-                    {[...Array(20)].map((_, i) => (
-                        <motion.div
-                            key={`layer2-${i}`}
-                            className={`absolute w-4 h-4 rounded-full blur-sm ${
-                                i % 4 === 0
-                                    ? "bg-purple-500/20"
-                                    : i % 4 === 1
-                                    ? "bg-pink-500/20"
-                                    : i % 4 === 2
-                                    ? "bg-blue-500/20"
-                                    : "bg-yellow-500/20"
-                            }`}
-                            style={{
-                                left: `${Math.random() * 100}%`,
-                                top: `${Math.random() * 100}%`,
-                            }}
-                            animate={{
-                                scale: [1, 2, 1],
-                                opacity: [0.2, 0.6, 0.2],
-                                rotate: [0, 360],
-                            }}
-                            transition={{
-                                duration: 6 + Math.random() * 3,
-                                repeat: Infinity,
-                                delay: Math.random() * 3,
-                            }}
-                        />
-                    ))}
-                </motion.div>
-
-                {/* Interactive Mouse Orb */}
-                <motion.div
-                    className="absolute w-96 h-96 bg-gradient-to-r from-purple-600/30 via-pink-600/30 to-blue-600/30 rounded-full blur-3xl pointer-events-none"
-                    style={{
-                        x: mousePosition.x * 0.5,
-                        y: mousePosition.y * 0.5,
-                        left: "50%",
-                        top: "50%",
-                        marginLeft: "-192px",
-                        marginTop: "-192px",
-                    }}
-                    animate={{
-                        scale: [1, 1.2, 1],
-                        opacity: [0.3, 0.6, 0.3],
-                    }}
-                    transition={{
-                        duration: 3,
-                        repeat: Infinity,
-                        ease: "easeInOut",
-                    }}
-                />
-
-                {/* Neural Network Lines */}
-                <svg className="absolute inset-0 w-full h-full pointer-events-none">
-                    {[...Array(8)].map((_, i) => (
-                        <motion.line
-                            key={i}
-                            x1={`${20 + i * 15}%`}
-                            y1="10%"
-                            x2={`${80 - i * 10}%`}
-                            y2="90%"
-                            stroke="url(#gradient)"
-                            strokeWidth="1"
-                            opacity="0.3"
-                            initial={{ pathLength: 0 }}
-                            animate={{ pathLength: 1 }}
-                            transition={{
-                                duration: 2,
-                                delay: i * 0.2,
-                                repeat: Infinity,
-                                repeatType: "reverse",
-                                repeatDelay: 1,
-                            }}
-                        />
-                    ))}
-                    <defs>
-                        <linearGradient
-                            id="gradient"
-                            x1="0%"
-                            y1="0%"
-                            x2="100%"
-                            y2="100%"
-                        >
-                            <stop offset="0%" stopColor="#8b5cf6" />
-                            <stop offset="50%" stopColor="#ec4899" />
-                            <stop offset="100%" stopColor="#3b82f6" />
-                        </linearGradient>
-                    </defs>
-                </svg>
-            </div>
+            {/* Removed background animations for better performance */}
 
             <div className="relative z-10 p-8">
                 {/* Enhanced Header Section */}
@@ -536,23 +390,16 @@ const Hero = () => {
                             variants={floatingVariants}
                             initial="initial"
                             animate="animate"
-                            style={{ x, y }}
                         >
                             <motion.div
                                 className="absolute -inset-8 bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 rounded-full blur-2xl opacity-60"
                                 animate={{
                                     scale: isHovered ? 1.3 : 1,
                                     opacity: isHovered ? 0.8 : 0.4,
-                                    rotate: 360,
                                 }}
                                 transition={{
                                     scale: { duration: 0.4 },
                                     opacity: { duration: 0.4 },
-                                    rotate: {
-                                        duration: 8,
-                                        repeat: Infinity,
-                                        ease: "linear",
-                                    },
                                 }}
                             />
                             <motion.img

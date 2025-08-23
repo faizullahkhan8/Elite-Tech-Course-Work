@@ -119,21 +119,19 @@ const Technology = () => {
 
     const orbitVariants = {
         animate: {
-            rotate: 360,
+            rotate: 180,
             transition: {
-                duration: 20,
-                repeat: Infinity,
-                ease: "linear",
+                duration: 2,
+                ease: "easeInOut",
             },
         },
     };
 
     const pulseVariants = {
         animate: {
-            scale: [1, 1.05, 1],
+            scale: 1.05,
             transition: {
-                duration: 2,
-                repeat: Infinity,
+                duration: 1,
                 ease: "easeInOut",
             },
         },
@@ -165,15 +163,14 @@ const Technology = () => {
                             top: `${Math.random() * 100}%`,
                         }}
                         animate={{
-                            scale: [1, 2, 1],
-                            opacity: [0.3, 0.8, 0.3],
-                            x: [0, Math.random() * 100 - 50, 0],
-                            y: [0, Math.random() * 100 - 50, 0],
+                            scale: 1.2,
+                            opacity: 0.6,
+                            x: 0,
+                            y: 0,
                         }}
                         transition={{
-                            duration: 4 + Math.random() * 4,
-                            repeat: Infinity,
-                            delay: Math.random() * 2,
+                            duration: 1.2,
+                            delay: i * 0.1,
                         }}
                     />
                 ))}
@@ -189,10 +186,9 @@ const Technology = () => {
                 >
                     <motion.div className="flex items-center justify-center gap-4 mb-6">
                         <motion.div
-                            animate={{ rotate: 360 }}
+                            animate={{ rotate: 180 }}
                             transition={{
-                                duration: 4,
-                                repeat: Infinity,
+                                duration: 1.2,
                                 ease: "linear",
                             }}
                         >
@@ -205,7 +201,6 @@ const Technology = () => {
                             animate={{ rotate: -360 }}
                             transition={{
                                 duration: 4,
-                                repeat: Infinity,
                                 ease: "linear",
                             }}
                         >
@@ -244,7 +239,6 @@ const Technology = () => {
                             animate={{ rotate: -360 }}
                             transition={{
                                 duration: 15,
-                                repeat: Infinity,
                                 ease: "linear",
                             }}
                         />
@@ -305,7 +299,6 @@ const Technology = () => {
                                     transition={{
                                         rotate: {
                                             duration: 20,
-                                            repeat: Infinity,
                                             ease: "linear",
                                         },
                                         scale: { duration: 0.3 },
@@ -572,7 +565,6 @@ const Technology = () => {
                                     animate={{ x: [0, 5, 0] }}
                                     transition={{
                                         duration: 1.5,
-                                        repeat: Infinity,
                                     }}
                                 >
                                     <ChevronRight className="w-5 h-5" />

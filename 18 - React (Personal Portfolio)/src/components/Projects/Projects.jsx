@@ -15,7 +15,7 @@ import weatherAppImage from "../../assets/weather-app-screenshot.png";
 // Using placeholder images since we can't access the originals
 const projectImages = {
     letsConnekt: letConnektScreenShot,
-    eliteEcommerce: ECommerceImage,
+    eliteECommerce: ECommerceImage,
     studentMangementSystem: StudentMangementSystemImage,
     CurrencyExchangeApp: CurrencyExchangeAppImage,
     EMedicine: EMedicineImage,
@@ -201,34 +201,7 @@ const Projects = () => {
             initial="hidden"
             animate="visible"
         >
-            {/* Animated background elements */}
-            <div className="absolute inset-0 overflow-hidden">
-                {[...Array(8)].map((_, i) => (
-                    <motion.div
-                        key={i}
-                        className={`absolute w-64 h-64 rounded-full bg-gradient-to-r ${
-                            i % 2 === 0
-                                ? "from-blue-200/20 to-purple-200/20"
-                                : "from-pink-200/20 to-orange-200/20"
-                        } blur-3xl`}
-                        style={{
-                            left: `${Math.random() * 100}%`,
-                            top: `${Math.random() * 100}%`,
-                        }}
-                        variants={backgroundVariants}
-                        animate={{
-                            scale: [1, 1.2, 1],
-                            opacity: [0.1, 0.2, 0.1],
-                            rotate: [0, 180, 360],
-                        }}
-                        transition={{
-                            duration: 10 + Math.random() * 10,
-                            repeat: Infinity,
-                            delay: Math.random() * 5,
-                        }}
-                    />
-                ))}
-            </div>
+            {/* Removed background animations for better performance */}
 
             <div className="relative z-10 max-w-7xl mx-auto">
                 {/* Header Section */}
@@ -236,31 +209,11 @@ const Projects = () => {
                     className="text-center mb-16"
                     variants={titleVariants}
                 >
-                    <motion.div className="flex items-center justify-center gap-3 mb-6">
-                        <motion.div
-                            animate={{ rotate: 360 }}
-                            transition={{
-                                duration: 3,
-                                repeat: Infinity,
-                                ease: "linear",
-                            }}
-                        >
-                            <Sparkles className="w-8 h-8 text-yellow-500" />
-                        </motion.div>
+                    <div className="flex items-center justify-center gap-3 mb-6">
                         <h1 className="text-6xl font-bold bg-gradient-to-r from-slate-800 via-blue-600 to-purple-600 bg-clip-text text-transparent">
                             My Projects
                         </h1>
-                        <motion.div
-                            animate={{ rotate: -360 }}
-                            transition={{
-                                duration: 3,
-                                repeat: Infinity,
-                                ease: "linear",
-                            }}
-                        >
-                            <Sparkles className="w-8 h-8 text-purple-500" />
-                        </motion.div>
-                    </motion.div>
+                    </div>
                     <motion.p
                         className="text-2xl text-gray-600 font-light max-w-3xl mx-auto leading-relaxed"
                         initial={{ opacity: 0, y: 20 }}
@@ -268,16 +221,10 @@ const Projects = () => {
                         transition={{ delay: 0.3, duration: 0.6 }}
                     >
                         Crafting digital experiences that make me
-                        <motion.span
-                            className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent font-semibold"
-                            animate={{
-                                backgroundPosition: ["0%", "100%", "0%"],
-                            }}
-                            transition={{ duration: 3, repeat: Infinity }}
-                        >
+                        <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent font-semibold">
                             {" "}
                             stand out from the crowd
-                        </motion.span>
+                        </span>
                     </motion.p>
                 </motion.div>
 
@@ -390,32 +337,7 @@ const Projects = () => {
                                             </motion.a>
                                         </motion.div>
 
-                                        {/* Floating particles */}
-                                        {hoveredCard === project.id &&
-                                            [...Array(5)].map((_, i) => (
-                                                <motion.div
-                                                    key={i}
-                                                    className="absolute w-1 h-1 bg-white rounded-full"
-                                                    style={{
-                                                        left: `${
-                                                            Math.random() * 100
-                                                        }%`,
-                                                        top: `${
-                                                            Math.random() * 100
-                                                        }%`,
-                                                    }}
-                                                    animate={{
-                                                        y: [-20, -60],
-                                                        opacity: [1, 0],
-                                                        scale: [1, 0],
-                                                    }}
-                                                    transition={{
-                                                        duration: 1.5,
-                                                        repeat: Infinity,
-                                                        delay: i * 0.2,
-                                                    }}
-                                                />
-                                            ))}
+                                        {/* Removed floating particles for better performance */}
                                     </div>
 
                                     {/* Content */}
@@ -444,22 +366,8 @@ const Projects = () => {
                                                     <motion.span
                                                         key={tag}
                                                         className={`px-3 py-1 text-xs font-medium bg-gradient-to-r ${project.color} text-white rounded-full`}
-                                                        initial={{
-                                                            opacity: 0,
-                                                            scale: 0,
-                                                        }}
-                                                        animate={{
-                                                            opacity: 1,
-                                                            scale: 1,
-                                                        }}
-                                                        transition={{
-                                                            delay:
-                                                                0.1 * tagIndex,
-                                                            duration: 0.3,
-                                                            type: "spring",
-                                                        }}
                                                         whileHover={{
-                                                            scale: 1.1,
+                                                            scale: 1.05,
                                                         }}
                                                     >
                                                         {tag}
@@ -489,18 +397,9 @@ const Projects = () => {
                                         </div>
                                     </div>
 
-                                    {/* Corner Accent */}
-                                    <motion.div
+                                    {/* Removed corner accent animation for better performance */}
+                                    <div
                                         className={`absolute top-4 right-4 w-3 h-3 bg-gradient-to-r ${project.color} rounded-full`}
-                                        animate={{
-                                            scale: [1, 1.2, 1],
-                                            opacity: [0.7, 1, 0.7],
-                                        }}
-                                        transition={{
-                                            duration: 2,
-                                            repeat: Infinity,
-                                            delay: index * 0.2,
-                                        }}
                                     />
                                 </motion.div>
                             </motion.div>
@@ -528,23 +427,10 @@ const Projects = () => {
                             }}
                             whileTap={{ scale: 0.95 }}
                         >
-                            <motion.div
-                                className="absolute inset-0 bg-gradient-to-r from-purple-600 to-pink-600"
-                                initial={{ x: "-100%" }}
-                                whileHover={{ x: "0%" }}
-                                transition={{ duration: 0.4 }}
-                            />
+                            {/* Removed gradient animation for better performance */}
                             <span className="relative z-10 flex items-center gap-2">
                                 View All Projects
-                                <motion.div
-                                    animate={{ x: [0, 5, 0] }}
-                                    transition={{
-                                        duration: 1.5,
-                                        repeat: Infinity,
-                                    }}
-                                >
-                                    <ArrowUpRight className="w-5 h-5" />
-                                </motion.div>
+                                <ArrowUpRight className="w-5 h-5" />
                             </span>
                         </motion.button>
                     </a>

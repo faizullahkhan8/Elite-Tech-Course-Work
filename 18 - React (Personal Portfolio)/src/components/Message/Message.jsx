@@ -15,7 +15,7 @@ import {
 const Message = () => {
     const [currentWord, setCurrentWord] = useState(0);
     const [isVisible, setIsVisible] = useState(false);
-    const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+    // Removed mouse tracking for better performance
 
     const highlightWords = useMemo(
         () => [
@@ -80,13 +80,7 @@ const Message = () => {
         setIsVisible(true);
     }, []);
 
-    const handleMouseMove = useCallback((e) => {
-        const rect = e.currentTarget.getBoundingClientRect();
-        setMousePosition({
-            x: e.clientX - rect.left,
-            y: e.clientY - rect.top,
-        });
-    }, []);
+    // Removed mouse move handler for better performance
 
     const containerVariants = {
         hidden: { opacity: 0, scale: 0.9 },
@@ -126,11 +120,10 @@ const Message = () => {
 
     const glowVariants = {
         animate: {
-            scale: [1, 1.2, 1],
-            opacity: [0.5, 0.8, 0.5],
+            scale: 1.1,
+            opacity: 0.7,
             transition: {
-                duration: 2,
-                repeat: Infinity,
+                duration: 1,
                 ease: "easeInOut",
             },
         },
@@ -142,78 +135,8 @@ const Message = () => {
             variants={containerVariants}
             initial="hidden"
             animate="visible"
-            onMouseMove={handleMouseMove}
         >
-            {/* Animated background elements */}
-            <div className="absolute inset-0 overflow-hidden">
-                {/* Floating particles */}
-                {[...Array(20)].map((_, i) => (
-                    <motion.div
-                        key={i}
-                        className={`absolute w-1 h-1 rounded-full ${
-                            i % 4 === 0
-                                ? "bg-blue-400"
-                                : i % 4 === 1
-                                ? "bg-purple-400"
-                                : i % 4 === 2
-                                ? "bg-pink-400"
-                                : "bg-yellow-400"
-                        }`}
-                        style={{
-                            left: `${Math.random() * 100}%`,
-                            top: `${Math.random() * 100}%`,
-                        }}
-                        animate={{
-                            scale: [0, 1, 0],
-                            opacity: [0, 1, 0],
-                            y: [0, -100, -200],
-                        }}
-                        transition={{
-                            duration: 3 + Math.random() * 2,
-                            repeat: Infinity,
-                            delay: Math.random() * 3,
-                            ease: "easeOut",
-                        }}
-                    />
-                ))}
-
-                {/* Gradient orbs */}
-                <motion.div
-                    className="absolute w-96 h-96 bg-gradient-to-r from-blue-600/20 to-purple-600/20 rounded-full blur-3xl"
-                    style={{
-                        left: mousePosition.x - 192,
-                        top: mousePosition.y - 192,
-                    }}
-                    transition={{ type: "spring", stiffness: 50, damping: 15 }}
-                />
-
-                {[...Array(3)].map((_, i) => (
-                    <motion.div
-                        key={i}
-                        className={`absolute w-64 h-64 rounded-full blur-2xl ${
-                            i === 0
-                                ? "bg-gradient-to-r from-blue-500/10 to-purple-500/10"
-                                : i === 1
-                                ? "bg-gradient-to-r from-purple-500/10 to-pink-500/10"
-                                : "bg-gradient-to-r from-pink-500/10 to-yellow-500/10"
-                        }`}
-                        style={{
-                            left: `${20 + i * 30}%`,
-                            top: `${10 + i * 20}%`,
-                        }}
-                        animate={{
-                            scale: [1, 1.2, 1],
-                            rotate: [0, 180, 360],
-                            opacity: [0.1, 0.2, 0.1],
-                        }}
-                        transition={{
-                            duration: 8 + i * 2,
-                            repeat: Infinity,
-                            delay: i * 1,
-                        }}
-                    />
-                ))}
-            </div>
+            {/* Removed background animations for better performance */}
 
             <div className="relative z-10 flex flex-col items-center justify-center min-h-[60vh] px-8 py-12">
                 {/* Header Icons */}
@@ -222,25 +145,7 @@ const Message = () => {
                     variants={itemVariants}
                 >
                     {[Zap, Crown, Flame].map((Icon, index) => (
-                        <motion.div
-                            key={index}
-                            className="relative"
-                            animate={{
-                                rotate: [0, 360],
-                                scale: [1, 1.1, 1],
-                            }}
-                            transition={{
-                                duration: 3,
-                                repeat: Infinity,
-                                delay: index * 0.5,
-                                ease: "easeInOut",
-                            }}
-                        >
-                            <motion.div
-                                className="absolute inset-0 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-full blur-lg opacity-60"
-                                variants={glowVariants}
-                                animate="animate"
-                            />
+                        <motion.div key={index} className="relative">
                             <Icon className="relative w-8 h-8 text-yellow-400" />
                         </motion.div>
                     ))}
@@ -266,15 +171,10 @@ const Message = () => {
                                 <motion.span
                                     className="bg-gradient-to-r from-yellow-400 via-orange-400 to-red-400 bg-clip-text text-transparent font-black"
                                     animate={{
-                                        backgroundPosition: [
-                                            "0%",
-                                            "100%",
-                                            "0%",
-                                        ],
+                                        backgroundPosition: "100%",
                                     }}
                                     transition={{
-                                        duration: 3,
-                                        repeat: Infinity,
+                                        duration: 1.2,
                                         ease: "easeInOut",
                                     }}
                                 >
@@ -283,12 +183,11 @@ const Message = () => {
                                 <motion.div
                                     className="absolute -inset-2 bg-gradient-to-r from-yellow-400/20 to-orange-400/20 blur-xl rounded-lg"
                                     animate={{
-                                        scale: [1, 1.1, 1],
-                                        opacity: [0.3, 0.6, 0.3],
+                                        scale: 1.1,
+                                        opacity: 0.6,
                                     }}
                                     transition={{
-                                        duration: 2,
-                                        repeat: Infinity,
+                                        duration: 1.2,
                                     }}
                                 />
                             </motion.span>
@@ -308,17 +207,12 @@ const Message = () => {
                                 <motion.span
                                     className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent font-black"
                                     animate={{
-                                        backgroundPosition: [
-                                            "0%",
-                                            "100%",
-                                            "0%",
-                                        ],
+                                        backgroundPosition: "100%",
                                     }}
                                     transition={{
-                                        duration: 3,
-                                        repeat: Infinity,
+                                        duration: 1.2,
                                         ease: "easeInOut",
-                                        delay: 1,
+                                        delay: 0.5,
                                     }}
                                 >
                                     NEXT PROJECT
@@ -331,7 +225,6 @@ const Message = () => {
                                     }}
                                     transition={{
                                         duration: 2,
-                                        repeat: Infinity,
                                         delay: 0.5,
                                     }}
                                 />
@@ -356,43 +249,13 @@ const Message = () => {
                                 }}
                                 transition={{
                                     duration: 2,
-                                    repeat: Infinity,
                                     ease: "easeInOut",
                                 }}
                             >
                                 RANK #1
                             </motion.h1>
 
-                            {/* Sparkle effects around RANK */}
-                            {[...Array(8)].map((_, i) => (
-                                <motion.div
-                                    key={i}
-                                    className="absolute w-3 h-3 bg-yellow-400 rounded-full"
-                                    style={{
-                                        left: `${
-                                            10 +
-                                            Math.cos((i * 45 * Math.PI) / 180) *
-                                                120
-                                        }px`,
-                                        top: `${
-                                            30 +
-                                            Math.sin((i * 45 * Math.PI) / 180) *
-                                                60
-                                        }px`,
-                                    }}
-                                    animate={{
-                                        scale: [0, 1, 0],
-                                        rotate: [0, 180, 360],
-                                        opacity: [0, 1, 0],
-                                    }}
-                                    transition={{
-                                        duration: 2,
-                                        repeat: Infinity,
-                                        delay: i * 0.2,
-                                        ease: "easeInOut",
-                                    }}
-                                />
-                            ))}
+                            {/* Removed sparkle effects for better performance */}
                         </motion.div>
                     </motion.div>
                 </motion.div>
@@ -424,7 +287,6 @@ const Message = () => {
                                         }}
                                         transition={{
                                             duration: 2,
-                                            repeat: Infinity,
                                             delay: index * 0.3,
                                         }}
                                     >
@@ -471,53 +333,19 @@ const Message = () => {
                                     animate={{ x: [0, 10, 0] }}
                                     transition={{
                                         duration: 1.5,
-                                        repeat: Infinity,
                                     }}
                                 >
                                     <Rocket className="w-6 h-6" />
                                 </motion.div>
                             </span>
 
-                            {/* Button shine effect */}
-                            <motion.div
-                                className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-white to-transparent opacity-0"
-                                animate={{
-                                    x: ["-100%", "100%"],
-                                    opacity: [0, 0.3, 0],
-                                }}
-                                transition={{
-                                    duration: 2,
-                                    repeat: Infinity,
-                                    repeatDelay: 1,
-                                }}
-                            />
+                            {/* Removed button shine effect for better performance */}
                         </motion.button>
                     </a>
                 </motion.div>
 
                 {/* Bottom decorative elements */}
-                <motion.div
-                    className="flex items-center gap-4 mt-8"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 1, duration: 0.6 }}
-                >
-                    {[...Array(5)].map((_, i) => (
-                        <motion.div
-                            key={i}
-                            className="w-2 h-2 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-full"
-                            animate={{
-                                scale: [1, 1.5, 1],
-                                opacity: [0.5, 1, 0.5],
-                            }}
-                            transition={{
-                                duration: 1.5,
-                                repeat: Infinity,
-                                delay: i * 0.2,
-                            }}
-                        />
-                    ))}
-                </motion.div>
+                {/* Removed bottom decorative elements for better performance */}
             </div>
         </motion.div>
     );

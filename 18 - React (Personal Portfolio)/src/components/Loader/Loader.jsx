@@ -21,10 +21,9 @@ const LoadingScreen = () => {
                         width: `${200 + i * 80}px`,
                         height: `${200 + i * 80}px`,
                     }}
-                    animate={{ rotate: 360 }}
+                    animate={{ rotate: 0 }}
                     transition={{
-                        duration: 10 + i * 4,
-                        repeat: Infinity,
+                        duration: 1.5 + i * 0.5,
                         ease: "linear",
                     }}
                 />
@@ -33,10 +32,10 @@ const LoadingScreen = () => {
             {/* Central glowing orb */}
             <motion.div
                 className="relative w-32 h-32 rounded-full bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 shadow-2xl flex items-center justify-center"
-                animate={{ scale: [1, 1.2, 1], rotate: [0, 360] }}
+                initial={{ scale: 1, rotate: 0 }}
+                animate={{ scale: 1.1, rotate: 90 }}
                 transition={{
-                    duration: 3,
-                    repeat: Infinity,
+                    duration: 1.5,
                     ease: "easeInOut",
                 }}
             >
@@ -55,11 +54,11 @@ const LoadingScreen = () => {
                             left: `calc(50% + ${Math.cos(angle) * radius}px)`,
                             top: `calc(50% + ${Math.sin(angle) * radius}px)`,
                         }}
-                        animate={{ scale: [0, 1.2, 0], opacity: [0, 1, 0] }}
+                        initial={{ scale: 0, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
                         transition={{
-                            duration: 2,
-                            delay: i * 0.2,
-                            repeat: Infinity,
+                            duration: 1.2,
+                            delay: i * 0.1,
                             ease: "easeInOut",
                         }}
                     />
@@ -69,8 +68,9 @@ const LoadingScreen = () => {
             {/* Loading Text */}
             <motion.h1
                 className="mt-48 text-3xl md:text-4xl font-bold bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 bg-clip-text text-transparent"
-                animate={{ opacity: [0.3, 1, 0.3] }}
-                transition={{ duration: 2, repeat: Infinity }}
+                initial={{ opacity: 0.3 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 1.2 }}
             >
                 Loading Portfolio...
             </motion.h1>
