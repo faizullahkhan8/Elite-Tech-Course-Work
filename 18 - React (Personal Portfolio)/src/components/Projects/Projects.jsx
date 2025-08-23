@@ -378,22 +378,26 @@ const Projects = () => {
 
                                         {/* Action Buttons - Mobile Fallback */}
                                         <div className="flex items-center justify-between pt-2 md:hidden">
-                                            <motion.button
+                                            <motion.a
+                                                target="_blank"
+                                                href={project.liveUrl}
                                                 className="flex items-center gap-2 text-blue-600 hover:text-blue-700 font-medium"
                                                 whileHover={{ scale: 1.05 }}
                                                 whileTap={{ scale: 0.95 }}
                                             >
                                                 <Eye className="w-4 h-4" />
                                                 Live Demo
-                                            </motion.button>
-                                            <motion.button
+                                            </motion.a>
+                                            <motion.a
+                                                target="_blank"
+                                                href={project.github}
                                                 className="flex items-center gap-2 text-gray-600 hover:text-gray-700 font-medium"
                                                 whileHover={{ scale: 1.05 }}
                                                 whileTap={{ scale: 0.95 }}
                                             >
                                                 <Github className="w-4 h-4" />
                                                 Github
-                                            </motion.button>
+                                            </motion.a>
                                         </div>
                                     </div>
 
