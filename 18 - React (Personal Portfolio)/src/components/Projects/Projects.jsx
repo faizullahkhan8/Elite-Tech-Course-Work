@@ -38,7 +38,7 @@ const Projects = () => {
                 id: 8,
                 title: "Blog Book",
                 description:
-                    "A blog application where users can read and write blogs.",
+                    "A blog application where users can read, write, like, and comment on blogs. As well as can see real time crypto prices and news.",
                 image: projectImages.BlogBook,
                 github: "https://github.com/faizullahkhan8/blog-app",
                 liveUrl: "https://blogbook.surge.sh",
@@ -156,7 +156,7 @@ const Projects = () => {
                 github: "https://github.com/faizullahkhan8/Elite-Tech-Course-Work/tree/master/17%20-%20JavaScript%20(Test)",
                 liveUrl: "https://quiz-app-by-faizullah.surge.sh",
                 tags: ["React", "Redux", "External API"],
-                category: "fullstack",
+                category: "frontend",
                 color: "from-pink-500 to-purple-600",
             },
         ],
