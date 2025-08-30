@@ -11,6 +11,7 @@ import BlogApp from "../../assets/website-blog.jpg";
 import letConnektScreenShot from "../../assets/lets-connekt-app-screenshot.png";
 import quizAppImage from "../../assets/quiz-app-screenshot.png";
 import weatherAppImage from "../../assets/weather-app-screenshot.png";
+import BlogBookImage from "../../assets/blog-book-screenshot.png";
 
 // Using placeholder images since we can't access the originals
 const projectImages = {
@@ -23,6 +24,7 @@ const projectImages = {
     LMS: LMSImage,
     WebsiteBlog: BlogApp,
     weatherAppImage,
+    BlogBook: BlogBookImage,
 };
 
 const Projects = () => {
@@ -32,6 +34,18 @@ const Projects = () => {
     // Memoize the projects array so it's not recreated on every render
     const projects = useMemo(
         () => [
+            {
+                id: 8,
+                title: "Blog Book",
+                description:
+                    "A blog application where users can read and write blogs.",
+                image: projectImages.BlogBook,
+                github: "https://github.com/faizullahkhan8/blog-app",
+                liveUrl: "https://blogbook.surge.sh",
+                tags: ["MERN", "Tanstack", "React Query", "Imagekit"],
+                category: "fullstack",
+                color: "from-pink-500 to-purple-600",
+            },
             {
                 id: 1,
                 title: "Let's Connekt",
@@ -49,7 +63,7 @@ const Projects = () => {
                 title: "Elite E-Commerce",
                 description:
                     "An E-Commerce app with the funtions that are normally founded in the traditional apps",
-                image: projectImages.eliteEcommerce,
+                image: projectImages.eliteECommerce,
                 github: "https://github.com/faizullahkhan8/Elite-Tech-Course-Work/",
                 liveUrl: "https://elite-ecommerce-store.vercel.app/",
                 tags: ["React", "fakeapi"],
@@ -130,6 +144,19 @@ const Projects = () => {
                 liveUrl: "https://weather-app-by-faizullah.surge.sh",
                 tags: ["React", "Tailwind", "External API"],
                 category: "frontend",
+                color: "from-pink-500 to-purple-600",
+            },
+
+            {
+                id: 9,
+                title: "Quiz App",
+                description:
+                    "A quiz application where users can take quizzes and track their scores.",
+                image: projectImages.quizAppImage,
+                github: "https://github.com/faizullahkhan8/Elite-Tech-Course-Work/tree/master/17%20-%20JavaScript%20(Test)",
+                liveUrl: "https://quiz-app-by-faizullah.surge.sh",
+                tags: ["React", "Redux", "External API"],
+                category: "fullstack",
                 color: "from-pink-500 to-purple-600",
             },
         ],
